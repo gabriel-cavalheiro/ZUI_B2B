@@ -1,1 +1,38 @@
 /* Enter your custom styles here */
+
+/* Checkboxes de processadores */
+.sapMCb {
+  min-height: 2.5rem;
+}
+
+/* Botões de ação */
+.sapMBtn {
+  border-radius: 5px;
+  transition: .1s ease-in-out;
+}
+
+.sapMBtn:hover {
+  transform: scale(1.02);
+}
+
+/* Tabela de resultados */
+.sapMListTblHeader {
+  font-weight: bold;
+}
+
+/* Títulos das seções de parâmetros */
+.sapUiFormTitle {
+  font-weight: bold;
+}
+
+/* SegmentedButton */
+.sapMSegB {
+  margin-left: 0.5rem;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .sapMPage>.sapMPageContent {
+    padding: 0.25rem;
+  }
+}

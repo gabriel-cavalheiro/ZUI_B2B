@@ -1,0 +1,16 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+    <SelectDialog
+        title="Selecione a Org. Vendas"
+        items="{view>/branches}"
+        search=".onVHVkorgSearch"
+        confirm=".onVHVkorgConfirm"
+        cancel=".onVHVkorgConfirm"
+        multiSelect="false">
+        <StandardListItem
+            title="{view>branch}"
+            description="{view>name}"
+            info="{view>bukrs}" />
+    </SelectDialog>
+</core:FragmentDefinition>
