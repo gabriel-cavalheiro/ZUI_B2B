@@ -1,0 +1,18 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+    <SelectDialog
+        id="idBranchSelectDialog"
+        title="Selecione os Branches"
+        items="{view>/branches}"
+        search=".onVHBranchSearch"
+        confirm=".onVHBranchConfirm"
+        cancel=".onVHBranchConfirm"
+        multiSelect="true">
+        <StandardListItem
+            id="idBranchStandardListItem"
+            title="{view>branch}"
+            description="{view>name}"
+            info="{view>bukrs}" />
+    </SelectDialog>
+</core:FragmentDefinition>

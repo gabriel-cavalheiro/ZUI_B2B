@@ -1,0 +1,18 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+    <SelectDialog
+        id="idClientesSelectDialog"
+        title="Selecione os Clientes"
+        items="{view>/clientes}"
+        search=".onVHClientesSearch"
+        confirm=".onVHClientesConfirm"
+        cancel=".onVHClientesConfirm"
+        multiSelect="true">
+        <StandardListItem
+            id="idClienteStandardListItem"
+            title="{view>customer}"
+            description="{view>customername}"
+            info="{view>cityname}" />
+    </SelectDialog>
+</core:FragmentDefinition>

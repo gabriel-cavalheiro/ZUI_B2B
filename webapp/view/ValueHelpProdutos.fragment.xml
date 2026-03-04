@@ -1,0 +1,17 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+    <SelectDialog
+        id="idProdutosSelectDialog"
+        title="Selecione os Materiais"
+        items="{view>/produtos}"
+        search=".onVHProdutosSearch"
+        confirm=".onVHProdutosConfirm"
+        cancel=".onVHProdutosConfirm"
+        multiSelect="true">
+        <StandardListItem
+            id="idProdutoStandardListItem"
+            title="{view>product}"
+            description="{view>productname}" />
+    </SelectDialog>
+</core:FragmentDefinition>

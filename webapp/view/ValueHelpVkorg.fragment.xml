@@ -2,15 +2,16 @@
     xmlns="sap.m"
     xmlns:core="sap.ui.core">
     <SelectDialog
+        id="idOrgVendasSelectDialog"
         title="Selecione a Org. Vendas"
-        items="{view>/branches}"
-        search=".onVHVkorgSearch"
-        confirm=".onVHVkorgConfirm"
-        cancel=".onVHVkorgConfirm"
+        items="{view>/orgVendas}"
+        search=".onOrgVendasSelectDialogSearch"
+        confirm=".onOrgVendasSelectDialogConfirm"
+        cancel=".onOrgVendasSelectDialogCancel"
         multiSelect="false">
         <StandardListItem
-            title="{view>branch}"
-            description="{view>name}"
-            info="{view>bukrs}" />
+            id="idOrgVendasStandardListItem"
+            title="{view>vkorg}"
+            description="{view>vtext}" />
     </SelectDialog>
 </core:FragmentDefinition>

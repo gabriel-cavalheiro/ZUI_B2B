@@ -15,8 +15,13 @@ sap.ui.define([
     return Controller.extend("br.com.inbetta.zsdb2b.controller.Main", {
 
         onInit: function () {
+            this._oVHDialog = null;
+            this._oVHClientesDialog = null;
+            this._oVHProdutosDialog = null;
+            this._oVHBranchDialog = null;
+            this._sProdutoTargetField = null;
             this._initViewModel();
-            this._loadBranches();
+            this._loadOrgVendas();
         },
 
         _initViewModel: function () {
@@ -34,22 +39,36 @@ sap.ui.define([
                     SEGMENTO: false
                 },
                 params: {
-                    datum: "", pltyp: "", mater: "",
-                    datimp: "", icms: true, ipi: true, st: false,
+                    datumRange: "", pltyp: "", mater: "",
+                    datimpRange: "", icms: true, ipi: true, st: false,
                     gruop: "", shipf: "", shipt: "",
-                    positivados: true, rejeitados: false, kunnr: "", erdatk: "",
+                    positivados: true, rejeitados: false, kunnr: "", erdatkRange: "",
                     matnr: "", vtweg: "", werks: "", mtart: "", lgort: "",
                     matest: "",
-                    branch: "", credat: "",
-                    erdat: "", vbeln: "",
-                    datbi: "", ztag1: ""
+                    branch: "", cRedatRange: "",
+                    erdatRange: "", vbeln: "",
+                    datbiRange: "", ztag1: ""
                 },
                 temSelecionado: false,
                 resultadoVisivel: false,
                 resultados: [],
-                branches: []
+                orgVendas: [],
+                branches: [],
+                clientes: [],
+                produtos: []
             });
             this.getView().setModel(oViewModel, "view");
+        },
+
+        _loadOrgVendas: function () {
+            var that = this;
+            var oODataModel = this.getOwnerComponent().getModel();
+            return ODataService.loadOrgVendas(oODataModel).then(function (aItems) {
+                that.getView().getModel("view").setProperty("/orgVendas", aItems);
+                return aItems;
+            }).catch(function () {
+                return [];
+            });
         },
 
         _loadBranches: function () {
@@ -63,14 +82,36 @@ sap.ui.define([
             });
         },
 
+        _loadClientes: function () {
+            var that = this;
+            var oODataModel = this.getOwnerComponent().getModel();
+            return ODataService.loadClientes(oODataModel).then(function (aItems) {
+                that.getView().getModel("view").setProperty("/clientes", aItems);
+                return aItems;
+            }).catch(function () {
+                return [];
+            });
+        },
+
+        _loadProdutos: function () {
+            var that = this;
+            var oODataModel = this.getOwnerComponent().getModel();
+            return ODataService.loadProdutos(oODataModel).then(function (aItems) {
+                that.getView().getModel("view").setProperty("/produtos", aItems);
+                return aItems;
+            }).catch(function () {
+                return [];
+            });
+        },
+
         // ========== VALUE HELP VKORG ==========
 
         onValueHelpVkorg: function () {
             var oView = this.getView();
-            var aBranches = oView.getModel("view").getProperty("/branches") || [];
+            var aOrgVendas = oView.getModel("view").getProperty("/orgVendas") || [];
             var that = this;
 
-            Promise.resolve(aBranches.length ? aBranches : this._loadBranches()).then(function () {
+            Promise.resolve(aOrgVendas.length ? aOrgVendas : this._loadOrgVendas()).then(function () {
                 if (!that._oVHDialog) {
                     Fragment.load({
                         id: oView.getId(),
@@ -87,7 +128,177 @@ sap.ui.define([
             });
         },
 
-        onVHVkorgSearch: function (oEvent) {
+        onOrgVendasSelectDialogSearch: function (oEvent) {
+            var sValue = oEvent.getParameter("value");
+            var aFilters = [];
+            if (sValue) {
+                aFilters.push(new Filter({
+                    filters: [
+                        new Filter("vkorg", FilterOperator.Contains, sValue),
+                        new Filter("vtext", FilterOperator.Contains, sValue)
+                    ],
+                    and: false
+                }));
+            }
+            oEvent.getSource().getBinding("items").filter(aFilters);
+        },
+
+        onOrgVendasSelectDialogConfirm: function (oEvent) {
+            var oItem = oEvent.getParameter("selectedItem");
+            if (oItem) {
+                var sVkorg = oItem.getBindingContext("view").getProperty("vkorg");
+                this.getView().getModel("view").setProperty("/vkorg", sVkorg);
+            }
+        },
+
+        onOrgVendasSelectDialogCancel: function () {},
+
+        onVkorgSuggestionSelected: function (oEvent) {
+            var oItem = oEvent.getParameter("selectedItem");
+            if (oItem) {
+                this.getView().getModel("view").setProperty("/vkorg", oItem.getKey());
+            }
+        },
+
+        // ========== VALUE HELP CLIENTES ==========
+
+        onKunnrInputValueHelpRequest: function () {
+            var oView = this.getView();
+            var that = this;
+            var aClientes = oView.getModel("view").getProperty("/clientes") || [];
+
+            Promise.resolve(aClientes.length ? aClientes : this._loadClientes()).then(function () {
+                if (!that._oVHClientesDialog) {
+                    Fragment.load({
+                        id: oView.getId() + "-clientes",
+                        name: "br.com.inbetta.zsdb2b.view.ValueHelpClientes",
+                        controller: that
+                    }).then(function (oDialog) {
+                        that._oVHClientesDialog = oDialog;
+                        oView.addDependent(oDialog);
+                        oDialog.open();
+                    });
+                } else {
+                    that._oVHClientesDialog.open();
+                }
+            });
+        },
+
+        onVHClientesSearch: function (oEvent) {
+            var sValue = oEvent.getParameter("value");
+            var aFilters = [];
+            if (sValue) {
+                aFilters.push(new Filter({
+                    filters: [
+                        new Filter("customer", FilterOperator.Contains, sValue),
+                        new Filter("customername", FilterOperator.Contains, sValue),
+                        new Filter("cityname", FilterOperator.Contains, sValue)
+                    ],
+                    and: false
+                }));
+            }
+            oEvent.getSource().getBinding("items").filter(aFilters);
+        },
+
+        onVHClientesConfirm: function (oEvent) {
+            var aItems = oEvent.getParameter("selectedItems");
+            if (aItems && aItems.length) {
+                var sValues = aItems.map(function (oItem) {
+                    return oItem.getBindingContext("view").getProperty("customer");
+                }).join(",");
+                this.getView().getModel("view").setProperty("/params/kunnr", sValues);
+            }
+        },
+
+        // ========== VALUE HELP PRODUTOS (Mater / Matnr / Matest) ==========
+
+        onMaterInputValueHelpRequest: function () {
+            this._sProdutoTargetField = "mater";
+            this._openProdutosDialog();
+        },
+
+        onMatnrInputValueHelpRequest: function () {
+            this._sProdutoTargetField = "matnr";
+            this._openProdutosDialog();
+        },
+
+        onMatestInputValueHelpRequest: function () {
+            this._sProdutoTargetField = "matest";
+            this._openProdutosDialog();
+        },
+
+        _openProdutosDialog: function () {
+            var oView = this.getView();
+            var that = this;
+            var aProdutos = oView.getModel("view").getProperty("/produtos") || [];
+
+            Promise.resolve(aProdutos.length ? aProdutos : this._loadProdutos()).then(function () {
+                if (!that._oVHProdutosDialog) {
+                    Fragment.load({
+                        id: oView.getId() + "-produtos",
+                        name: "br.com.inbetta.zsdb2b.view.ValueHelpProdutos",
+                        controller: that
+                    }).then(function (oDialog) {
+                        that._oVHProdutosDialog = oDialog;
+                        oView.addDependent(oDialog);
+                        oDialog.open();
+                    });
+                } else {
+                    that._oVHProdutosDialog.open();
+                }
+            });
+        },
+
+        onVHProdutosSearch: function (oEvent) {
+            var sValue = oEvent.getParameter("value");
+            var aFilters = [];
+            if (sValue) {
+                aFilters.push(new Filter({
+                    filters: [
+                        new Filter("product", FilterOperator.Contains, sValue),
+                        new Filter("productname", FilterOperator.Contains, sValue)
+                    ],
+                    and: false
+                }));
+            }
+            oEvent.getSource().getBinding("items").filter(aFilters);
+        },
+
+        onVHProdutosConfirm: function (oEvent) {
+            var aItems = oEvent.getParameter("selectedItems");
+            if (aItems && aItems.length) {
+                var sValues = aItems.map(function (oItem) {
+                    return oItem.getBindingContext("view").getProperty("product");
+                }).join(",");
+                this.getView().getModel("view").setProperty("/params/" + this._sProdutoTargetField, sValues);
+            }
+        },
+
+        // ========== VALUE HELP BRANCH (NF) ==========
+
+        onBranchInputValueHelpRequest: function () {
+            var oView = this.getView();
+            var that = this;
+            var aBranches = oView.getModel("view").getProperty("/branches") || [];
+
+            Promise.resolve(aBranches.length ? aBranches : this._loadBranches()).then(function () {
+                if (!that._oVHBranchDialog) {
+                    Fragment.load({
+                        id: oView.getId() + "-branch",
+                        name: "br.com.inbetta.zsdb2b.view.ValueHelpBranch",
+                        controller: that
+                    }).then(function (oDialog) {
+                        that._oVHBranchDialog = oDialog;
+                        oView.addDependent(oDialog);
+                        oDialog.open();
+                    });
+                } else {
+                    that._oVHBranchDialog.open();
+                }
+            });
+        },
+
+        onVHBranchSearch: function (oEvent) {
             var sValue = oEvent.getParameter("value");
             var aFilters = [];
             if (sValue) {
@@ -102,18 +313,13 @@ sap.ui.define([
             oEvent.getSource().getBinding("items").filter(aFilters);
         },
 
-        onVHVkorgConfirm: function (oEvent) {
-            var oItem = oEvent.getParameter("selectedItem");
-            if (oItem) {
-                var sBranch = oItem.getBindingContext("view").getProperty("branch");
-                this.getView().getModel("view").setProperty("/vkorg", sBranch);
-            }
-        },
-
-        onVkorgSuggestionSelected: function (oEvent) {
-            var oItem = oEvent.getParameter("selectedItem");
-            if (oItem) {
-                this.getView().getModel("view").setProperty("/vkorg", oItem.getKey());
+        onVHBranchConfirm: function (oEvent) {
+            var aItems = oEvent.getParameter("selectedItems");
+            if (aItems && aItems.length) {
+                var sValues = aItems.map(function (oItem) {
+                    return oItem.getBindingContext("view").getProperty("branch");
+                }).join(",");
+                this.getView().getModel("view").setProperty("/params/branch", sValues);
             }
         },
 
@@ -176,7 +382,7 @@ sap.ui.define([
 
         onLimpar: function () {
             this._initViewModel();
-            this._loadBranches();
+            this._loadOrgVendas();
             MessageToast.show("Filtros limpos!");
         },
 

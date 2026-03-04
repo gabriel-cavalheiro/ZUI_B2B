@@ -15,7 +15,26 @@ sap.ui.define([], function () {
         },
 
         /**
-         * Carrega lista de Branches (org vendas)
+         * Carrega lista de Org. de Vendas para o campo Vkorg
+         */
+        loadOrgVendas: function (oModel) {
+            return new Promise(function (resolve, reject) {
+                oModel.read("/ZshOrgVendasSet", {
+                    success: function (oData) {
+                        var aItems = (oData.results || []).map(function (o) {
+                            return { vkorg: o.Vkorg, vtext: o.Vtext };
+                        });
+                        resolve(aItems);
+                    },
+                    error: function (oError) {
+                        reject(oError);
+                    }
+                });
+            });
+        },
+
+        /**
+         * Carrega lista de Branches (para NF)
          */
         loadBranches: function (oModel) {
             return new Promise(function (resolve, reject) {
@@ -23,6 +42,44 @@ sap.ui.define([], function () {
                     success: function (oData) {
                         var aItems = (oData.results || []).map(function (o) {
                             return { branch: o.Branch, name: o.Name, bukrs: o.Bukrs };
+                        });
+                        resolve(aItems);
+                    },
+                    error: function (oError) {
+                        reject(oError);
+                    }
+                });
+            });
+        },
+
+        /**
+         * Carrega lista de Clientes
+         */
+        loadClientes: function (oModel) {
+            return new Promise(function (resolve, reject) {
+                oModel.read("/ZshClientesSet", {
+                    success: function (oData) {
+                        var aItems = (oData.results || []).map(function (o) {
+                            return { customer: o.Customer, customername: o.Customername, cityname: o.Cityname };
+                        });
+                        resolve(aItems);
+                    },
+                    error: function (oError) {
+                        reject(oError);
+                    }
+                });
+            });
+        },
+
+        /**
+         * Carrega lista de Produtos/Materiais
+         */
+        loadProdutos: function (oModel) {
+            return new Promise(function (resolve, reject) {
+                oModel.read("/ZshProdutosSet", {
+                    success: function (oData) {
+                        var aItems = (oData.results || []).map(function (o) {
+                            return { product: o.Product, productname: o.Productname };
                         });
                         resolve(aItems);
                     },

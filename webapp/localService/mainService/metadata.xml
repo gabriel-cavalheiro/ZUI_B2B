@@ -42,11 +42,36 @@
                 <Property Name="Bukrs" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
                 <Property Name="Name" Type="Edm.String" Nullable="false" MaxLength="30" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
             </EntityType>
+            <EntityType Name="ZshOrgVendas" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="Vkorg"/>
+                </Key>
+                <Property Name="Vkorg" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Org.Vendas" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Vtext" Type="Edm.String" Nullable="false" MaxLength="20" sap:unicode="false" sap:label="Denominação" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+            </EntityType>
+            <EntityType Name="ZshClientes" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="Customer"/>
+                </Key>
+                <Property Name="Customer" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Cliente" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Customername" Type="Edm.String" Nullable="false" MaxLength="80" sap:unicode="false" sap:label="Nome do cliente" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Cityname" Type="Edm.String" Nullable="false" MaxLength="35" sap:unicode="false" sap:label="Cidade" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+            </EntityType>
+            <EntityType Name="ZshProdutos" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="Product"/>
+                </Key>
+                <Property Name="Product" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false" sap:label="Material" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Productname" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false" sap:label="Descrição" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+            </EntityType>
             <EntityContainer Name="ZSD_B2B_SRV_Entities" m:IsDefaultEntityContainer="true" sap:supported-formats="atom json xlsx">
                 <EntitySet Name="B2BMessageSet" EntityType="ZSD_B2B_SRV.B2BMessage" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
                 <EntitySet Name="B2BResultSet" EntityType="ZSD_B2B_SRV.B2BResult" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
                 <EntitySet Name="EnviarNFSet" EntityType="ZSD_B2B_SRV.EnviarNF" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
                 <EntitySet Name="YpmtlBranchSet" EntityType="ZSD_B2B_SRV.YpmtlBranch" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
+                <EntitySet Name="ZshOrgVendasSet" EntityType="ZSD_B2B_SRV.ZshOrgVendas" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
+                <EntitySet Name="ZshClientesSet" EntityType="ZSD_B2B_SRV.ZshClientes" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
+                <EntitySet Name="ZshProdutosSet" EntityType="ZSD_B2B_SRV.ZshProdutos" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
                 <FunctionImport Name="ExecutarMultiplos" ReturnType="Collection(ZSD_B2B_SRV.B2BResult)" EntitySet="B2BResultSet" m:HttpMethod="GET">
                     <Parameter Name="Tipos" Type="Edm.String" Mode="In"/>
                     <Parameter Name="CargaInicial" Type="Edm.Boolean" Mode="In" Nullable="true" sap:label="Indicator"/>
@@ -79,40 +104,38 @@
                     <Parameter Name="Shipt" Type="Edm.String" Mode="In" Nullable="true"/>
                 </FunctionImport>
                 <FunctionImport Name="ExecutarProcessador" ReturnType="Collection(ZSD_B2B_SRV.B2BMessage)" EntitySet="B2BMessageSet" m:HttpMethod="GET">
-                    <Parameter Name="Shipt" Type="Edm.String" Mode="In" Nullable="true"/>
-                    <Parameter Name="Shipf" Type="Edm.String" Mode="In" Nullable="true"/>
-                    <Parameter Name="Gruop" Type="Edm.String" Mode="In" Nullable="true"/>
-                    <Parameter Name="Erdat" Type="Edm.String" Mode="In" Nullable="true"/>
-                    <Parameter Name="Vbeln" Type="Edm.String" Mode="In" Nullable="true"/>
-                    <Parameter Name="Credat" Type="Edm.String" Mode="In" Nullable="true"/>
-                    <Parameter Name="Branch" Type="Edm.String" Mode="In" Nullable="true"/>
-                    <Parameter Name="Erdatk" Type="Edm.String" Mode="In" Nullable="true"/>
-                    <Parameter Name="Kunnr" Type="Edm.String" Mode="In" Nullable="true"/>
-                    <Parameter Name="Matest" Type="Edm.String" Mode="In" Nullable="true"/>
-                    <Parameter Name="Matnr" Type="Edm.String" Mode="In" Nullable="true"/>
-                    <Parameter Name="Mater" Type="Edm.String" Mode="In" Nullable="true"/>
-                    <Parameter Name="Pltyp" Type="Edm.String" Mode="In" Nullable="true"/>
-                    <Parameter Name="Ztag1" Type="Edm.String" Mode="In" Nullable="true"/>
-                    <Parameter Name="Datbi" Type="Edm.String" Mode="In" Nullable="true"/>
-                    <Parameter Name="Lgort" Type="Edm.String" Mode="In" Nullable="true"/>
-                    <Parameter Name="Mtart" Type="Edm.String" Mode="In" Nullable="true"/>
-                    <Parameter Name="Werks" Type="Edm.String" Mode="In" Nullable="true"/>
-                    <Parameter Name="Vtweg" Type="Edm.String" Mode="In" Nullable="true"/>
-                    <Parameter Name="Rejeitados" Type="Edm.Boolean" Mode="In" Nullable="true" sap:label="Indicator"/>
                     <Parameter Name="Tipo" Type="Edm.String" Mode="In"/>
-                    <Parameter Name="Positivados" Type="Edm.Boolean" Mode="In" Nullable="true" sap:label="Indicator"/>
                     <Parameter Name="CargaInicial" Type="Edm.Boolean" Mode="In" Nullable="true" sap:label="Indicator"/>
                     <Parameter Name="Vkorg" Type="Edm.String" Mode="In" Nullable="true"/>
                     <Parameter Name="Datum" Type="Edm.String" Mode="In" Nullable="true"/>
-                    <Parameter Name="ST" Type="Edm.Boolean" Mode="In" Nullable="true" sap:label="Indicator"/>
                     <Parameter Name="Datimp" Type="Edm.String" Mode="In" Nullable="true"/>
                     <Parameter Name="Icms" Type="Edm.Boolean" Mode="In" Nullable="true" sap:label="Indicator"/>
                     <Parameter Name="Ipi" Type="Edm.Boolean" Mode="In" Nullable="true" sap:label="Indicator"/>
+                    <Parameter Name="ST" Type="Edm.Boolean" Mode="In" Nullable="true" sap:label="Indicator"/>
+                    <Parameter Name="Positivados" Type="Edm.Boolean" Mode="In" Nullable="true" sap:label="Indicator"/>
+                    <Parameter Name="Rejeitados" Type="Edm.Boolean" Mode="In" Nullable="true" sap:label="Indicator"/>
+                    <Parameter Name="Vtweg" Type="Edm.String" Mode="In" Nullable="true"/>
+                    <Parameter Name="Werks" Type="Edm.String" Mode="In" Nullable="true"/>
+                    <Parameter Name="Mtart" Type="Edm.String" Mode="In" Nullable="true"/>
+                    <Parameter Name="Lgort" Type="Edm.String" Mode="In" Nullable="true"/>
+                    <Parameter Name="Datbi" Type="Edm.String" Mode="In" Nullable="true"/>
+                    <Parameter Name="Ztag1" Type="Edm.String" Mode="In" Nullable="true"/>
+                    <Parameter Name="Pltyp" Type="Edm.String" Mode="In" Nullable="true"/>
+                    <Parameter Name="Mater" Type="Edm.String" Mode="In" Nullable="true"/>
+                    <Parameter Name="Matnr" Type="Edm.String" Mode="In" Nullable="true"/>
+                    <Parameter Name="Matest" Type="Edm.String" Mode="In" Nullable="true"/>
+                    <Parameter Name="Kunnr" Type="Edm.String" Mode="In" Nullable="true"/>
+                    <Parameter Name="Erdatk" Type="Edm.String" Mode="In" Nullable="true"/>
+                    <Parameter Name="Branch" Type="Edm.String" Mode="In" Nullable="true"/>
+                    <Parameter Name="Credat" Type="Edm.String" Mode="In" Nullable="true"/>
+                    <Parameter Name="Vbeln" Type="Edm.String" Mode="In" Nullable="true"/>
+                    <Parameter Name="Erdat" Type="Edm.String" Mode="In" Nullable="true"/>
+                    <Parameter Name="Gruop" Type="Edm.String" Mode="In" Nullable="true"/>
+                    <Parameter Name="Shipf" Type="Edm.String" Mode="In" Nullable="true"/>
+                    <Parameter Name="Shipt" Type="Edm.String" Mode="In" Nullable="true"/>
                 </FunctionImport>
             </EntityContainer>
             <Annotation Term="Core.SchemaVersion" String="1.0.0" xmlns="http://docs.oasis-open.org/odata/ns/edm"/>
-            <atom:link rel="self" href="https://vhbtsde1ci.sap.inbetta.com:44300/sap/opu/odata/sap/ZSD_B2B_SRV/$metadata" xmlns:atom="http://www.w3.org/2005/Atom"/>
-            <atom:link rel="latest-version" href="https://vhbtsde1ci.sap.inbetta.com:44300/sap/opu/odata/sap/ZSD_B2B_SRV/$metadata" xmlns:atom="http://www.w3.org/2005/Atom"/>
         </Schema>
     </edmx:DataServices>
 </edmx:Edmx>

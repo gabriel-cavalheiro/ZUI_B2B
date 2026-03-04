@@ -42,6 +42,28 @@ sap.ui.define([], function () {
         },
 
         /**
+         * Extrai a data inicial de um range "YYYYMMDD - YYYYMMDD"
+         * @private
+         */
+        _rangeFrom: function (sRange) {
+            if (!sRange) { return ""; }
+            return sRange.split(" - ")[0] || "";
+        },
+
+        /**
+         * Extrai as duas datas de um range como CSV "YYYYMMDD,YYYYMMDD"
+         * @private
+         */
+        _rangeToCsv: function (sRange) {
+            if (!sRange) { return ""; }
+            var aParts = sRange.split(" - ");
+            if (aParts.length === 2 && aParts[1]) {
+                return aParts[0] + "," + aParts[1];
+            }
+            return aParts[0] || "";
+        },
+
+        /**
          * Adiciona parâmetros comuns de todos os processadores
          * @private
          */
@@ -49,12 +71,12 @@ sap.ui.define([], function () {
             if (!p) { return; }
 
             // Lista de Preço
-            if (p.datum) { oParams.Datum = p.datum; }
+            if (p.datumRange) { oParams.Datum = this._rangeFrom(p.datumRange); }
             if (p.pltyp) { oParams.Pltyp = p.pltyp; }
             if (p.mater) { oParams.Mater = p.mater; }
 
             // Impostos
-            if (p.datimp) { oParams.Datimp = p.datimp; }
+            if (p.datimpRange) { oParams.Datimp = this._rangeFrom(p.datimpRange); }
             oParams.Icms = !!p.icms;
             oParams.Ipi = !!p.ipi;
             oParams.ST = !!p.st;
@@ -66,7 +88,7 @@ sap.ui.define([], function () {
             oParams.Positivados = !!p.positivados;
             oParams.Rejeitados = !!p.rejeitados;
             if (p.kunnr) { oParams.Kunnr = p.kunnr; }
-            if (p.erdatk) { oParams.Erdatk = p.erdatk; }
+            if (p.erdatkRange) { oParams.Erdatk = this._rangeToCsv(p.erdatkRange); }
 
             // Produtos
             if (p.matnr) { oParams.Matnr = p.matnr; }
@@ -80,14 +102,14 @@ sap.ui.define([], function () {
 
             // NF
             if (p.branch) { oParams.Branch = p.branch; }
-            if (p.credat) { oParams.Credat = p.credat; }
+            if (p.cRedatRange) { oParams.Credat = this._rangeToCsv(p.cRedatRange); }
 
             // OV
-            if (p.erdat) { oParams.Erdat = p.erdat; }
+            if (p.erdatRange) { oParams.Erdat = this._rangeToCsv(p.erdatRange); }
             if (p.vbeln) { oParams.Vbeln = p.vbeln; }
 
             // Segmento
-            if (p.datbi) { oParams.Datbi = p.datbi; }
+            if (p.datbiRange) { oParams.Datbi = this._rangeFrom(p.datbiRange); }
             if (p.ztag1) { oParams.Ztag1 = p.ztag1; }
         },
 
