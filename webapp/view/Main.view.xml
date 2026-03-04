@@ -82,7 +82,7 @@
                         <f:content>
 
                             <!-- === LISTA DE PREÇO === -->
-                            <Title text="{i18n>lblListaPreco}" visible="{view>/processadores/LISTA_PRECO}" />
+                            <core:Title text="{i18n>lblListaPreco}" />
 
                             <Label text="{i18n>lblDatum}" visible="{view>/processadores/LISTA_PRECO}" />
                             <DatePicker id="dpDatum" value="{view>/params/datum}" displayFormat="dd/MM/yyyy" valueFormat="yyyyMMdd" visible="{view>/processadores/LISTA_PRECO}" />
@@ -94,7 +94,7 @@
                             <Input id="inpMater" value="{view>/params/mater}" placeholder="Material (CSV)" visible="{view>/processadores/LISTA_PRECO}" />
 
                             <!-- === IMPOSTOS === -->
-                            <Title text="{i18n>lblImpostos}" visible="{view>/processadores/IMPOSTOS}" />
+                            <core:Title text="{i18n>lblImpostos}" />
 
                             <Label text="{i18n>lblDatimp}" visible="{view>/processadores/IMPOSTOS}" />
                             <DatePicker id="dpDatimp" value="{view>/params/datimp}" displayFormat="dd/MM/yyyy" valueFormat="yyyyMMdd" visible="{view>/processadores/IMPOSTOS}" />
@@ -116,7 +116,7 @@
                             <Input id="inpShipt" value="{view>/params/shipt}" placeholder="Ship To (CSV)" visible="{view>/processadores/IMPOSTOS}" />
 
                             <!-- === CLIENTES === -->
-                            <Title text="{i18n>lblClientes}" visible="{view>/processadores/CLIENTES}" />
+                            <core:Title text="{i18n>lblClientes}" />
 
                             <Label text="{i18n>lblTipoCliente}" visible="{view>/processadores/CLIENTES}" />
                             <HBox visible="{view>/processadores/CLIENTES}">
@@ -131,7 +131,7 @@
                             <Input id="inpErdatk" value="{view>/params/erdatk}" placeholder="Data criação (CSV)" visible="{view>/processadores/CLIENTES}" />
 
                             <!-- === PRODUTOS === -->
-                            <Title text="{i18n>lblProdutos}" visible="{view>/processadores/PRODUTOS}" />
+                            <core:Title text="{i18n>lblProdutos}" />
 
                             <Label text="{i18n>lblMatnr}" visible="{view>/processadores/PRODUTOS}" />
                             <Input id="inpMatnr" value="{view>/params/matnr}" placeholder="Material (CSV)" visible="{view>/processadores/PRODUTOS}" />
@@ -149,13 +149,13 @@
                             <Input id="inpLgort" value="{view>/params/lgort}" placeholder="Ex: 0001" width="10rem" visible="{view>/processadores/PRODUTOS}" />
 
                             <!-- === ESTOQUE === -->
-                            <Title text="{i18n>lblEstoque}" visible="{view>/processadores/ESTOQUE}" />
+                            <core:Title text="{i18n>lblEstoque}" />
 
                             <Label text="{i18n>lblMatest}" visible="{view>/processadores/ESTOQUE}" />
                             <Input id="inpMatest" value="{view>/params/matest}" placeholder="Material estoque (CSV)" visible="{view>/processadores/ESTOQUE}" />
 
                             <!-- === NOTA FISCAL === -->
-                            <Title text="{i18n>lblNF}" visible="{view>/processadores/NF}" />
+                            <core:Title text="{i18n>lblNF}" />
 
                             <Label text="{i18n>lblBranch}" visible="{view>/processadores/NF}" />
                             <Input id="inpBranch" value="{view>/params/branch}" placeholder="Branch (CSV)" visible="{view>/processadores/NF}" />
@@ -164,7 +164,7 @@
                             <Input id="inpCredat" value="{view>/params/credat}" placeholder="Data criação (CSV)" visible="{view>/processadores/NF}" />
 
                             <!-- === ORDEM DE VENDA === -->
-                            <Title text="{i18n>lblOrdemVenda}" visible="{view>/processadores/ORDEM_VENDA}" />
+                            <core:Title text="{i18n>lblOrdemVenda}" />
 
                             <Label text="{i18n>lblErdat}" visible="{view>/processadores/ORDEM_VENDA}" />
                             <Input id="inpErdat" value="{view>/params/erdat}" placeholder="Data criação (CSV)" visible="{view>/processadores/ORDEM_VENDA}" />
@@ -173,7 +173,7 @@
                             <Input id="inpVbeln" value="{view>/params/vbeln}" placeholder="Nº OV (CSV)" visible="{view>/processadores/ORDEM_VENDA}" />
 
                             <!-- === SEGMENTO === -->
-                            <Title text="{i18n>lblSegmento}" visible="{view>/processadores/SEGMENTO}" />
+                            <core:Title text="{i18n>lblSegmento}" />
 
                             <Label text="{i18n>lblDatbi}" visible="{view>/processadores/SEGMENTO}" />
                             <DatePicker id="dpDatbi" value="{view>/params/datbi}" displayFormat="dd/MM/yyyy" valueFormat="yyyyMMdd" visible="{view>/processadores/SEGMENTO}" />
