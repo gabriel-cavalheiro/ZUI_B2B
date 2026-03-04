@@ -2,7 +2,6 @@
     controllerName="br.com.inbetta.zsdb2b.controller.Main"
     xmlns:mvc="sap.ui.core.mvc"
     xmlns="sap.m"
-    xmlns:f="sap.ui.layout.form"
     xmlns:l="sap.ui.layout"
     xmlns:core="sap.ui.core">
 
@@ -17,10 +16,9 @@
                 <Panel expandable="true" expanded="true" headerText="{i18n>secProcessadores}">
                     <VBox class="sapUiSmallMargin">
 
-                        <!-- Tipo de Carga -->
                         <HBox alignItems="Center" class="sapUiSmallMarginBottom">
                             <Label text="{i18n>lblTipoCarga}" class="sapUiSmallMarginEnd" />
-                            <SegmentedButton id="sbCarga" selectedKey="{view>/tipoCarga}" selectionChange=".onTipoCargaChange">
+                            <SegmentedButton id="sbCarga" selectedKey="{view>/tipoCarga}">
                                 <items>
                                     <SegmentedButtonItem key="INICIAL" text="{i18n>lblInicial}" />
                                     <SegmentedButtonItem key="INCREMENTAL" text="{i18n>lblIncremental}" />
@@ -28,7 +26,6 @@
                             </SegmentedButton>
                         </HBox>
 
-                        <!-- Org. Vendas -->
                         <HBox alignItems="Center" class="sapUiSmallMarginBottom">
                             <Label text="{i18n>lblVkorg}" required="true" class="sapUiSmallMarginEnd" />
                             <Input
@@ -48,7 +45,6 @@
                             </Input>
                         </HBox>
 
-                        <!-- Checkboxes de processadores -->
                         <l:Grid defaultSpan="XL3 L3 M6 S12">
                             <CheckBox id="cbListaPreco" text="{i18n>lblListaPreco}" selected="{view>/processadores/LISTA_PRECO}" select=".onProcessadorSelect" />
                             <CheckBox id="cbImpostos" text="{i18n>lblImpostos}" selected="{view>/processadores/IMPOSTOS}" select=".onProcessadorSelect" />
@@ -60,7 +56,6 @@
                             <CheckBox id="cbSegmento" text="{i18n>lblSegmento}" selected="{view>/processadores/SEGMENTO}" select=".onProcessadorSelect" />
                         </l:Grid>
 
-                        <!-- Botão selecionar todos -->
                         <HBox class="sapUiSmallMarginTop">
                             <Button text="{i18n>btnSelecionarTodos}" press=".onSelecionarTodos" type="Transparent" icon="sap-icon://multiselect-all" />
                             <Button text="{i18n>btnDesmarcarTodos}" press=".onDesmarcarTodos" type="Transparent" icon="sap-icon://multiselect-none" class="sapUiSmallMarginBegin" />
@@ -72,117 +67,123 @@
                 <!-- Parâmetros Condicionais   -->
                 <!-- ========================= -->
                 <Panel expandable="true" expanded="true" headerText="{i18n>secParametros}" visible="{view>/temSelecionado}">
-
-                    <f:SimpleForm
-                        editable="true"
-                        layout="ResponsiveGridLayout"
-                        labelSpanXL="4" labelSpanL="4" labelSpanM="4" labelSpanS="12"
-                        columnsXL="1" columnsL="1" columnsM="1">
-
-                        <f:content>
-
-                            <!-- === LISTA DE PREÇO === -->
-                            <core:Title text="{i18n>lblListaPreco}" />
-
-                            <Label text="{i18n>lblDatum}" visible="{view>/processadores/LISTA_PRECO}" />
-                            <DatePicker id="dpDatum" value="{view>/params/datum}" displayFormat="dd/MM/yyyy" valueFormat="yyyyMMdd" visible="{view>/processadores/LISTA_PRECO}" />
-
-                            <Label text="{i18n>lblPltyp}" visible="{view>/processadores/LISTA_PRECO}" />
-                            <Input id="inpPltyp" value="{view>/params/pltyp}" placeholder="Ex: 01,02" visible="{view>/processadores/LISTA_PRECO}" />
-
-                            <Label text="{i18n>lblMater}" visible="{view>/processadores/LISTA_PRECO}" />
-                            <Input id="inpMater" value="{view>/params/mater}" placeholder="Material (CSV)" visible="{view>/processadores/LISTA_PRECO}" />
-
-                            <!-- === IMPOSTOS === -->
-                            <core:Title text="{i18n>lblImpostos}" />
-
-                            <Label text="{i18n>lblDatimp}" visible="{view>/processadores/IMPOSTOS}" />
-                            <DatePicker id="dpDatimp" value="{view>/params/datimp}" displayFormat="dd/MM/yyyy" valueFormat="yyyyMMdd" visible="{view>/processadores/IMPOSTOS}" />
-
-                            <Label text="{i18n>lblTipoImposto}" visible="{view>/processadores/IMPOSTOS}" />
-                            <HBox visible="{view>/processadores/IMPOSTOS}">
-                                <CheckBox text="ICMS" selected="{view>/params/icms}" />
-                                <CheckBox text="IPI" selected="{view>/params/ipi}" class="sapUiSmallMarginBegin" />
-                                <CheckBox text="ST" selected="{view>/params/st}" class="sapUiSmallMarginBegin" />
-                            </HBox>
-
-                            <Label text="{i18n>lblGruop}" visible="{view>/processadores/IMPOSTOS}" />
-                            <Input id="inpGruop" value="{view>/params/gruop}" placeholder="Grupo (CSV)" visible="{view>/processadores/IMPOSTOS}" />
-
-                            <Label text="{i18n>lblShipf}" visible="{view>/processadores/IMPOSTOS}" />
-                            <Input id="inpShipf" value="{view>/params/shipf}" placeholder="Ship From (CSV)" visible="{view>/processadores/IMPOSTOS}" />
-
-                            <Label text="{i18n>lblShipt}" visible="{view>/processadores/IMPOSTOS}" />
-                            <Input id="inpShipt" value="{view>/params/shipt}" placeholder="Ship To (CSV)" visible="{view>/processadores/IMPOSTOS}" />
-
-                            <!-- === CLIENTES === -->
-                            <core:Title text="{i18n>lblClientes}" />
-
-                            <Label text="{i18n>lblTipoCliente}" visible="{view>/processadores/CLIENTES}" />
-                            <HBox visible="{view>/processadores/CLIENTES}">
-                                <CheckBox text="Positivados" selected="{view>/params/positivados}" />
-                                <CheckBox text="Rejeitados" selected="{view>/params/rejeitados}" class="sapUiSmallMarginBegin" />
-                            </HBox>
-
-                            <Label text="{i18n>lblKunnr}" visible="{view>/processadores/CLIENTES}" />
-                            <Input id="inpKunnr" value="{view>/params/kunnr}" placeholder="Cliente (CSV)" visible="{view>/processadores/CLIENTES}" />
-
-                            <Label text="{i18n>lblErdatk}" visible="{view>/processadores/CLIENTES}" />
-                            <Input id="inpErdatk" value="{view>/params/erdatk}" placeholder="Data criação (CSV)" visible="{view>/processadores/CLIENTES}" />
-
-                            <!-- === PRODUTOS === -->
-                            <core:Title text="{i18n>lblProdutos}" />
-
-                            <Label text="{i18n>lblMatnr}" visible="{view>/processadores/PRODUTOS}" />
-                            <Input id="inpMatnr" value="{view>/params/matnr}" placeholder="Material (CSV)" visible="{view>/processadores/PRODUTOS}" />
-
-                            <Label text="{i18n>lblVtweg}" visible="{view>/processadores/PRODUTOS}" />
-                            <Input id="inpVtweg" value="{view>/params/vtweg}" placeholder="Ex: 10" width="10rem" visible="{view>/processadores/PRODUTOS}" />
-
-                            <Label text="{i18n>lblWerks}" visible="{view>/processadores/PRODUTOS}" />
-                            <Input id="inpWerks" value="{view>/params/werks}" placeholder="Ex: 1500" width="10rem" visible="{view>/processadores/PRODUTOS}" />
-
-                            <Label text="{i18n>lblMtart}" visible="{view>/processadores/PRODUTOS}" />
-                            <Input id="inpMtart" value="{view>/params/mtart}" placeholder="Ex: FERT" width="10rem" visible="{view>/processadores/PRODUTOS}" />
-
-                            <Label text="{i18n>lblLgort}" visible="{view>/processadores/PRODUTOS}" />
-                            <Input id="inpLgort" value="{view>/params/lgort}" placeholder="Ex: 0001" width="10rem" visible="{view>/processadores/PRODUTOS}" />
-
-                            <!-- === ESTOQUE === -->
-                            <core:Title text="{i18n>lblEstoque}" />
-
-                            <Label text="{i18n>lblMatest}" visible="{view>/processadores/ESTOQUE}" />
-                            <Input id="inpMatest" value="{view>/params/matest}" placeholder="Material estoque (CSV)" visible="{view>/processadores/ESTOQUE}" />
-
-                            <!-- === NOTA FISCAL === -->
-                            <core:Title text="{i18n>lblNF}" />
-
-                            <Label text="{i18n>lblBranch}" visible="{view>/processadores/NF}" />
-                            <Input id="inpBranch" value="{view>/params/branch}" placeholder="Branch (CSV)" visible="{view>/processadores/NF}" />
-
-                            <Label text="{i18n>lblCredat}" visible="{view>/processadores/NF}" />
-                            <Input id="inpCredat" value="{view>/params/credat}" placeholder="Data criação (CSV)" visible="{view>/processadores/NF}" />
-
-                            <!-- === ORDEM DE VENDA === -->
-                            <core:Title text="{i18n>lblOrdemVenda}" />
-
-                            <Label text="{i18n>lblErdat}" visible="{view>/processadores/ORDEM_VENDA}" />
-                            <Input id="inpErdat" value="{view>/params/erdat}" placeholder="Data criação (CSV)" visible="{view>/processadores/ORDEM_VENDA}" />
-
-                            <Label text="{i18n>lblVbeln}" visible="{view>/processadores/ORDEM_VENDA}" />
-                            <Input id="inpVbeln" value="{view>/params/vbeln}" placeholder="Nº OV (CSV)" visible="{view>/processadores/ORDEM_VENDA}" />
-
-                            <!-- === SEGMENTO === -->
-                            <core:Title text="{i18n>lblSegmento}" />
-
-                            <Label text="{i18n>lblDatbi}" visible="{view>/processadores/SEGMENTO}" />
-                            <DatePicker id="dpDatbi" value="{view>/params/datbi}" displayFormat="dd/MM/yyyy" valueFormat="yyyyMMdd" visible="{view>/processadores/SEGMENTO}" />
-
-                            <Label text="{i18n>lblZtag1}" visible="{view>/processadores/SEGMENTO}" />
-                            <Input id="inpZtag1" value="{view>/params/ztag1}" placeholder="Ex: X" width="5rem" visible="{view>/processadores/SEGMENTO}" />
-
-                        </f:content>
-                    </f:SimpleForm>
+                
+                    <VBox class="sapUiSmallMargin">
+                
+                        <!-- LISTA DE PREÇO -->
+                        <Panel visible="{view>/processadores/LISTA_PRECO}" headerText="{i18n>lblListaPreco}" class="sapUiTinyMargin paramCard">
+                            <VBox class="sapUiSmallMargin">
+                                <Label text="{i18n>lblDatum}" />
+                                <DatePicker id="dpDatum" value="{view>/params/datum}" displayFormat="dd/MM/yyyy" valueFormat="yyyyMMdd" width="100%" class="sapUiTinyMarginBottom" />
+                                <Label text="{i18n>lblPltyp}" />
+                                <Input id="inpPltyp" value="{view>/params/pltyp}" placeholder="Ex: 01,02" width="100%" class="sapUiTinyMarginBottom" />
+                                <Label text="{i18n>lblMater}" />
+                                <Input id="inpMater" value="{view>/params/mater}" placeholder="Material (CSV)" width="100%" />
+                            </VBox>
+                        </Panel>
+                
+                        <!-- IMPOSTOS -->
+                        <Panel visible="{view>/processadores/IMPOSTOS}" headerText="{i18n>lblImpostos}" class="sapUiTinyMargin paramCard">
+                            <VBox class="sapUiSmallMargin">
+                                <Label text="{i18n>lblDatimp}" />
+                                <DatePicker id="dpDatimp" value="{view>/params/datimp}" displayFormat="dd/MM/yyyy" valueFormat="yyyyMMdd" width="100%" class="sapUiTinyMarginBottom" />
+                                <Label text="{i18n>lblTipoImposto}" />
+                                <HBox class="sapUiTinyMarginBottom">
+                                    <CheckBox text="ICMS" selected="{view>/params/icms}" />
+                                    <CheckBox text="IPI" selected="{view>/params/ipi}" class="sapUiSmallMarginBegin" />
+                                    <CheckBox text="ST" selected="{view>/params/st}" class="sapUiSmallMarginBegin" />
+                                </HBox>
+                                <Label text="{i18n>lblGruop}" />
+                                <Input id="inpGruop" value="{view>/params/gruop}" placeholder="Grupo (CSV)" width="100%" class="sapUiTinyMarginBottom" />
+                                <Label text="{i18n>lblShipf}" />
+                                <Input id="inpShipf" value="{view>/params/shipf}" placeholder="Ship From (CSV)" width="100%" class="sapUiTinyMarginBottom" />
+                                <Label text="{i18n>lblShipt}" />
+                                <Input id="inpShipt" value="{view>/params/shipt}" placeholder="Ship To (CSV)" width="100%" />
+                            </VBox>
+                        </Panel>
+                
+                        <!-- CLIENTES -->
+                        <Panel visible="{view>/processadores/CLIENTES}" headerText="{i18n>lblClientes}" class="sapUiTinyMargin paramCard">
+                            <VBox class="sapUiSmallMargin">
+                                <Label text="{i18n>lblTipoCliente}" />
+                                <HBox class="sapUiTinyMarginBottom">
+                                    <CheckBox text="Positivados" selected="{view>/params/positivados}" />
+                                    <CheckBox text="Rejeitados" selected="{view>/params/rejeitados}" class="sapUiSmallMarginBegin" />
+                                </HBox>
+                                <Label text="{i18n>lblKunnr}" />
+                                <Input id="inpKunnr" value="{view>/params/kunnr}" placeholder="Cliente (CSV)" width="100%" class="sapUiTinyMarginBottom" />
+                                <Label text="{i18n>lblErdatk}" />
+                                <Input id="inpErdatk" value="{view>/params/erdatk}" placeholder="Data criação (CSV)" width="100%" />
+                            </VBox>
+                        </Panel>
+                
+                        <!-- PRODUTOS -->
+                        <Panel visible="{view>/processadores/PRODUTOS}" headerText="{i18n>lblProdutos}" class="sapUiTinyMargin paramCard">
+                            <VBox class="sapUiSmallMargin">
+                                <Label text="{i18n>lblMatnr}" />
+                                <Input id="inpMatnr" value="{view>/params/matnr}" placeholder="Material (CSV)" width="100%" class="sapUiTinyMarginBottom" />
+                                <HBox class="sapUiTinyMarginBottom">
+                                    <VBox class="sapUiTinyMarginEnd" width="50%">
+                                        <Label text="{i18n>lblVtweg}" />
+                                        <Input id="inpVtweg" value="{view>/params/vtweg}" placeholder="Ex: 10" width="100%" />
+                                    </VBox>
+                                    <VBox width="50%">
+                                        <Label text="{i18n>lblWerks}" />
+                                        <Input id="inpWerks" value="{view>/params/werks}" placeholder="Ex: 1500" width="100%" />
+                                    </VBox>
+                                </HBox>
+                                <HBox>
+                                    <VBox class="sapUiTinyMarginEnd" width="50%">
+                                        <Label text="{i18n>lblMtart}" />
+                                        <Input id="inpMtart" value="{view>/params/mtart}" placeholder="Ex: FERT" width="100%" />
+                                    </VBox>
+                                    <VBox width="50%">
+                                        <Label text="{i18n>lblLgort}" />
+                                        <Input id="inpLgort" value="{view>/params/lgort}" placeholder="Ex: 0001" width="100%" />
+                                    </VBox>
+                                </HBox>
+                            </VBox>
+                        </Panel>
+                
+                        <!-- ESTOQUE -->
+                        <Panel visible="{view>/processadores/ESTOQUE}" headerText="{i18n>lblEstoque}" class="sapUiTinyMargin paramCard">
+                            <VBox class="sapUiSmallMargin">
+                                <Label text="{i18n>lblMatest}" />
+                                <Input id="inpMatest" value="{view>/params/matest}" placeholder="Material estoque (CSV)" width="100%" />
+                            </VBox>
+                        </Panel>
+                
+                        <!-- NOTA FISCAL -->
+                        <Panel visible="{view>/processadores/NF}" headerText="{i18n>lblNF}" class="sapUiTinyMargin paramCard">
+                            <VBox class="sapUiSmallMargin">
+                                <Label text="{i18n>lblBranch}" />
+                                <Input id="inpBranch" value="{view>/params/branch}" placeholder="Branch (CSV)" width="100%" class="sapUiTinyMarginBottom" />
+                                <Label text="{i18n>lblCredat}" />
+                                <Input id="inpCredat" value="{view>/params/credat}" placeholder="Data criação (CSV)" width="100%" />
+                            </VBox>
+                        </Panel>
+                
+                        <!-- ORDEM DE VENDA -->
+                        <Panel visible="{view>/processadores/ORDEM_VENDA}" headerText="{i18n>lblOrdemVenda}" class="sapUiTinyMargin paramCard">
+                            <VBox class="sapUiSmallMargin">
+                                <Label text="{i18n>lblErdat}" />
+                                <Input id="inpErdat" value="{view>/params/erdat}" placeholder="Data criação (CSV)" width="100%" class="sapUiTinyMarginBottom" />
+                                <Label text="{i18n>lblVbeln}" />
+                                <Input id="inpVbeln" value="{view>/params/vbeln}" placeholder="Nº OV (CSV)" width="100%" />
+                            </VBox>
+                        </Panel>
+                
+                        <!-- SEGMENTO -->
+                        <Panel visible="{view>/processadores/SEGMENTO}" headerText="{i18n>lblSegmento}" class="sapUiTinyMargin paramCard">
+                            <VBox class="sapUiSmallMargin">
+                                <Label text="{i18n>lblDatbi}" />
+                                <DatePicker id="dpDatbi" value="{view>/params/datbi}" displayFormat="dd/MM/yyyy" valueFormat="yyyyMMdd" width="100%" class="sapUiTinyMarginBottom" />
+                                <Label text="{i18n>lblZtag1}" />
+                                <Input id="inpZtag1" value="{view>/params/ztag1}" placeholder="Ex: X" width="6rem" />
+                            </VBox>
+                        </Panel>
+                
+                    </VBox>
                 </Panel>
 
                 <!-- ==================== -->
@@ -213,7 +214,6 @@
             </VBox>
         </content>
 
-        <!-- Footer -->
         <footer>
             <Toolbar>
                 <ToolbarSpacer />

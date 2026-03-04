@@ -30,6 +30,13 @@
   margin-left: 0.5rem;
 }
 
+/* Cards de parâmetros - flex grow para preencher espaço */
+.paramCard {
+  min-width: 20rem;
+  flex: 1 1 calc(50% - 1rem);
+  max-width: 100%;
+}
+
 /* Responsividade */
 @media (max-width: 768px) {
   .sapMPage>.sapMPageContent {
