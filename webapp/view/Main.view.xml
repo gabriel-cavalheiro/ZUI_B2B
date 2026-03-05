@@ -114,7 +114,7 @@
                                 <Input
                                     id="inpShipf"
                                     value="{view>/params/shipf}"
-                                    placeholder="Ship From"
+                                    placeholder="Emissor"
                                     width="50%"
                                     class="sapUiTinyMarginBottom"
                                     showValueHelp="true"
@@ -123,7 +123,7 @@
                                 <Input
                                     id="inpShipt"
                                     value="{view>/params/shipt}"
-                                    placeholder="Ship To"
+                                    placeholder="Receptor"
                                     width="50%"
                                     showValueHelp="true"
                                     valueHelpRequest=".onShiptInputValueHelpRequest" />
@@ -188,7 +188,7 @@
                         <Panel visible="{view>/processadores/NF}" headerText="{i18n>lblNF}" class="sapUiTinyMargin paramCard">
                             <VBox class="sapUiSmallMargin">
                                 <Label text="{i18n>lblBranch}" />
-                                <Input id="inpBranch" value="{view>/params/branch}" placeholder="Branch" width="50%"
+                                <Input id="inpBranch" value="{view>/params/branch}" placeholder="Filial" width="50%"
                                     showValueHelp="true" valueHelpRequest=".onBranchInputValueHelpRequest" class="sapUiTinyMarginBottom" />
                                 <Label text="{i18n>lblCredat}" />
                                 <DateRangeSelection id="idCRedatRangeDateRangePicker" value="{view>/params/cRedatRange}" displayFormat="dd/MM/yyyy" valueFormat="yyyyMMdd" width="50%" />
