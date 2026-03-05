@@ -1,0 +1,16 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+    <SelectDialog
+        id="idShipfSelectDialog"
+        title="Selecione os Ship From"
+        items="{view>/shipFromOptions}"
+        search=".onVHShipfSearch"
+        confirm=".onVHShipfConfirm"
+        cancel=".onVHShipfConfirm"
+        multiSelect="true">
+        <StandardListItem
+            id="idShipfStandardListItem"
+            title="{view>shipfrom}" />
+    </SelectDialog>
+</core:FragmentDefinition>

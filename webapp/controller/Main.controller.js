@@ -19,6 +19,10 @@ sap.ui.define([
             this._oVHClientesDialog = null;
             this._oVHProdutosDialog = null;
             this._oVHBranchDialog = null;
+            this._oVHPltypDialog = null;
+            this._oVHGruopDialog = null;
+            this._oVHShipfDialog = null;
+            this._oVHShiptDialog = null;
             this._sProdutoTargetField = null;
             this._iMinProdutoSearchChars = 3;
             this._iMaxProdutosVH = 100;
@@ -52,6 +56,29 @@ sap.ui.define([
                     searchFields: ["branch", "name"],
                     additionalBindings: [
                         { sourcePath: "/vkorg", targetCandidates: ["vkorg", "bukrs"] }
+                    ]
+                },
+                pltyp: {
+                    collectionPath: "/priceListTypes",
+                    searchFields: ["pricelisttype", "pricelisttypename"],
+                    additionalBindings: []
+                },
+                gruop: {
+                    collectionPath: "/groups",
+                    searchFields: ["gruop"],
+                    additionalBindings: []
+                },
+                shipf: {
+                    collectionPath: "/shipFromOptions",
+                    searchFields: ["shipfrom"],
+                    additionalBindings: []
+                },
+                shipt: {
+                    collectionPath: "/shipToOptions",
+                    searchFields: ["shipto", "shipfrom"],
+                    additionalBindings: [
+                        { sourcePath: "/params/shipf", targetCandidates: ["shipfrom"] },
+                        { sourcePath: "/params/gruop", targetCandidates: ["gruop", "group"] }
                     ]
                 }
             };
@@ -90,7 +117,12 @@ sap.ui.define([
                 orgVendas: [],
                 branches: [],
                 clientes: [],
-                produtos: []
+                produtos: [],
+                priceListTypes: [],
+                groups: [],
+                shipIcms: [],
+                shipFromOptions: [],
+                shipToOptions: []
             });
             this.getView().setModel(oViewModel, "view");
         },
@@ -126,6 +158,93 @@ sap.ui.define([
             }).catch(function () {
                 return [];
             });
+        },
+
+        _loadPriceListTypes: function () {
+            var that = this;
+            var oODataModel = this.getOwnerComponent().getModel();
+            return ODataService.loadPriceListTypes(oODataModel).then(function (aItems) {
+                that.getView().getModel("view").setProperty("/priceListTypes", aItems);
+                return aItems;
+            }).catch(function () {
+                return [];
+            });
+        },
+
+        _loadGroups: function () {
+            var that = this;
+            var oODataModel = this.getOwnerComponent().getModel();
+            return ODataService.loadGroups(oODataModel).then(function (aItems) {
+                that.getView().getModel("view").setProperty("/groups", aItems);
+                return aItems;
+            }).catch(function () {
+                return [];
+            });
+        },
+
+        _loadShipIcms: function () {
+            var that = this;
+            var oODataModel = this.getOwnerComponent().getModel();
+            return ODataService.loadShipIcms(oODataModel).then(function (aItems) {
+                var oViewModel = that.getView().getModel("view");
+                oViewModel.setProperty("/shipIcms", aItems);
+                that._setShipOptionCollections(aItems);
+                return aItems;
+            }).catch(function () {
+                that.getView().getModel("view").setProperty("/shipIcms", []);
+                that._setShipOptionCollections([]);
+                return [];
+            });
+        },
+
+        _setShipOptionCollections: function (aItems) {
+            var mShipFrom = Object.create(null);
+            var mShipTo = Object.create(null);
+            var aShipFromOptions = [];
+            var aShipToOptions = [];
+
+            (aItems || []).forEach(function (oItem) {
+                var sShipFrom = (oItem.shipfrom || "").trim();
+                var sShipTo = (oItem.shipto || "").trim();
+                var sGruop = (oItem.gruop || "").trim();
+                var sLand1 = (oItem.land1 || "").trim();
+
+                if (sShipFrom && !mShipFrom[sShipFrom]) {
+                    mShipFrom[sShipFrom] = true;
+                    aShipFromOptions.push({
+                        shipfrom: sShipFrom
+                    });
+                }
+
+                if (!sShipFrom || !sShipTo) {
+                    return;
+                }
+
+                var sShipToKey = sShipFrom + "|" + sShipTo;
+                if (mShipTo[sShipToKey]) {
+                    return;
+                }
+
+                mShipTo[sShipToKey] = true;
+                aShipToOptions.push({
+                    shipfrom: sShipFrom,
+                    shipto: sShipTo,
+                    gruop: sGruop,
+                    land1: sLand1
+                });
+            });
+
+            aShipFromOptions.sort(function (a, b) {
+                return a.shipfrom.localeCompare(b.shipfrom);
+            });
+            aShipToOptions.sort(function (a, b) {
+                var iByShipTo = a.shipto.localeCompare(b.shipto);
+                return iByShipTo !== 0 ? iByShipTo : a.shipfrom.localeCompare(b.shipfrom);
+            });
+
+            var oViewModel = this.getView().getModel("view");
+            oViewModel.setProperty("/shipFromOptions", aShipFromOptions);
+            oViewModel.setProperty("/shipToOptions", aShipToOptions);
         },
 
         _loadProdutos: function () {
@@ -194,8 +313,10 @@ sap.ui.define([
 
             (aBindings || []).forEach(function (oBinding) {
                 var sSource = oViewModel.getProperty(oBinding.sourcePath);
-                var sValue = (sSource || "").toString().split(",")[0].trim();
-                if (!sValue) {
+                var aValues = (sSource || "").toString().split(",").map(function (sValue) {
+                    return sValue.trim();
+                }).filter(Boolean);
+                if (!aValues.length) {
                     return;
                 }
 
@@ -204,7 +325,17 @@ sap.ui.define([
                     return;
                 }
 
-                aFilters.push(new Filter(sTarget, FilterOperator.EQ, sValue));
+                if (aValues.length === 1) {
+                    aFilters.push(new Filter(sTarget, FilterOperator.EQ, aValues[0]));
+                    return;
+                }
+
+                aFilters.push(new Filter({
+                    filters: aValues.map(function (sValue) {
+                        return new Filter(sTarget, FilterOperator.EQ, sValue);
+                    }),
+                    and: false
+                }));
             }.bind(this));
 
             if (!aFilters.length) {
@@ -218,14 +349,24 @@ sap.ui.define([
         },
 
         _resolveTargetProperty: function (aItems, aCandidates) {
-            var oFirst = aItems[0];
-            if (!oFirst) {
+            if (!aItems.length) {
                 return null;
             }
 
             for (var i = 0; i < aCandidates.length; i++) {
-                if (Object.prototype.hasOwnProperty.call(oFirst, aCandidates[i])) {
-                    return aCandidates[i];
+                var sCandidate = aCandidates[i];
+                var bHasValue = aItems.some(function (oItem) {
+                    if (!Object.prototype.hasOwnProperty.call(oItem, sCandidate)) {
+                        return false;
+                    }
+                    var vValue = oItem[sCandidate];
+                    if (vValue === null || vValue === undefined) {
+                        return false;
+                    }
+                    return String(vValue).trim() !== "";
+                });
+                if (bHasValue) {
+                    return sCandidate;
                 }
             }
 
@@ -325,6 +466,172 @@ sap.ui.define([
                     return oItem.getBindingContext("view").getProperty("customer");
                 }).join(",");
                 this.getView().getModel("view").setProperty("/params/kunnr", sValues);
+            }
+        },
+
+        // ========== VALUE HELP PLTYP ==========
+
+        onPltypInputValueHelpRequest: function () {
+            var oView = this.getView();
+            var that = this;
+            var aTypes = oView.getModel("view").getProperty("/priceListTypes") || [];
+
+            Promise.resolve(aTypes.length ? aTypes : this._loadPriceListTypes()).then(function () {
+                if (!that._oVHPltypDialog) {
+                    Fragment.load({
+                        id: oView.getId() + "-pltyp",
+                        name: "br.com.inbetta.zsdb2b.view.ValueHelpPltyp",
+                        controller: that
+                    }).then(function (oDialog) {
+                        that._oVHPltypDialog = oDialog;
+                        oView.addDependent(oDialog);
+                        that._applyValueHelpFilters(oDialog, "pltyp", "");
+                        oDialog.open();
+                    });
+                } else {
+                    that._applyValueHelpFilters(that._oVHPltypDialog, "pltyp", "");
+                    that._oVHPltypDialog.open();
+                }
+            });
+        },
+
+        onVHPltypSearch: function (oEvent) {
+            this._applyValueHelpFilters(oEvent.getSource(), "pltyp", oEvent.getParameter("value"));
+        },
+
+        onVHPltypConfirm: function (oEvent) {
+            var aItems = oEvent.getParameter("selectedItems");
+            if (aItems && aItems.length) {
+                var sValues = aItems.map(function (oItem) {
+                    return oItem.getBindingContext("view").getProperty("pricelisttype");
+                }).join(",");
+                this.getView().getModel("view").setProperty("/params/pltyp", sValues);
+            }
+        },
+
+        // ========== VALUE HELP GRUOP ==========
+
+        onGruopInputValueHelpRequest: function () {
+            var oView = this.getView();
+            var that = this;
+            var aGroups = oView.getModel("view").getProperty("/groups") || [];
+
+            Promise.resolve(aGroups.length ? aGroups : this._loadGroups()).then(function () {
+                if (!that._oVHGruopDialog) {
+                    Fragment.load({
+                        id: oView.getId() + "-gruop",
+                        name: "br.com.inbetta.zsdb2b.view.ValueHelpGruop",
+                        controller: that
+                    }).then(function (oDialog) {
+                        that._oVHGruopDialog = oDialog;
+                        oView.addDependent(oDialog);
+                        that._applyValueHelpFilters(oDialog, "gruop", "");
+                        oDialog.open();
+                    });
+                } else {
+                    that._applyValueHelpFilters(that._oVHGruopDialog, "gruop", "");
+                    that._oVHGruopDialog.open();
+                }
+            });
+        },
+
+        onVHGruopSearch: function (oEvent) {
+            this._applyValueHelpFilters(oEvent.getSource(), "gruop", oEvent.getParameter("value"));
+        },
+
+        onVHGruopConfirm: function (oEvent) {
+            var aItems = oEvent.getParameter("selectedItems");
+            if (aItems && aItems.length) {
+                var sValues = aItems.map(function (oItem) {
+                    return oItem.getBindingContext("view").getProperty("gruop");
+                }).join(",");
+                this.getView().getModel("view").setProperty("/params/gruop", sValues);
+            }
+        },
+
+        // ========== VALUE HELP SHIP FROM / SHIP TO ==========
+
+        onShipfInputValueHelpRequest: function () {
+            var oView = this.getView();
+            var that = this;
+            var aShipFromOptions = oView.getModel("view").getProperty("/shipFromOptions") || [];
+
+            Promise.resolve(aShipFromOptions.length ? aShipFromOptions : this._loadShipIcms()).then(function () {
+                if (!that._oVHShipfDialog) {
+                    Fragment.load({
+                        id: oView.getId() + "-shipf",
+                        name: "br.com.inbetta.zsdb2b.view.ValueHelpShipf",
+                        controller: that
+                    }).then(function (oDialog) {
+                        that._oVHShipfDialog = oDialog;
+                        oView.addDependent(oDialog);
+                        that._applyValueHelpFilters(oDialog, "shipf", "");
+                        oDialog.open();
+                    });
+                } else {
+                    that._applyValueHelpFilters(that._oVHShipfDialog, "shipf", "");
+                    that._oVHShipfDialog.open();
+                }
+            });
+        },
+
+        onVHShipfSearch: function (oEvent) {
+            this._applyValueHelpFilters(oEvent.getSource(), "shipf", oEvent.getParameter("value"));
+        },
+
+        onVHShipfConfirm: function (oEvent) {
+            var aItems = oEvent.getParameter("selectedItems") || [];
+            if (aItems.length) {
+                var aShipFrom = [];
+                aItems.forEach(function (oItem) {
+                    var sValue = oItem.getBindingContext("view").getProperty("shipfrom");
+                    if (sValue && aShipFrom.indexOf(sValue) === -1) {
+                        aShipFrom.push(sValue);
+                    }
+                });
+                this.getView().getModel("view").setProperty("/params/shipf", aShipFrom.join(","));
+            }
+        },
+
+        onShiptInputValueHelpRequest: function () {
+            var oView = this.getView();
+            var that = this;
+            var aShipToOptions = oView.getModel("view").getProperty("/shipToOptions") || [];
+
+            Promise.resolve(aShipToOptions.length ? aShipToOptions : this._loadShipIcms()).then(function () {
+                if (!that._oVHShiptDialog) {
+                    Fragment.load({
+                        id: oView.getId() + "-shipt",
+                        name: "br.com.inbetta.zsdb2b.view.ValueHelpShipt",
+                        controller: that
+                    }).then(function (oDialog) {
+                        that._oVHShiptDialog = oDialog;
+                        oView.addDependent(oDialog);
+                        that._applyValueHelpFilters(oDialog, "shipt", "");
+                        oDialog.open();
+                    });
+                } else {
+                    that._applyValueHelpFilters(that._oVHShiptDialog, "shipt", "");
+                    that._oVHShiptDialog.open();
+                }
+            });
+        },
+
+        onVHShiptSearch: function (oEvent) {
+            this._applyValueHelpFilters(oEvent.getSource(), "shipt", oEvent.getParameter("value"));
+        },
+
+        onVHShiptConfirm: function (oEvent) {
+            var aItems = oEvent.getParameter("selectedItems") || [];
+            if (aItems.length) {
+                var aShipTo = [];
+                aItems.forEach(function (oItem) {
+                    var sValue = oItem.getBindingContext("view").getProperty("shipto");
+                    if (sValue && aShipTo.indexOf(sValue) === -1) {
+                        aShipTo.push(sValue);
+                    }
+                });
+                this.getView().getModel("view").setProperty("/params/shipt", aShipTo.join(","));
             }
         },
 

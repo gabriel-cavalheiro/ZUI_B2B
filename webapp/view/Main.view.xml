@@ -76,7 +76,14 @@
                                 <Label text="{i18n>lblDatum}" />
                                 <DateRangeSelection id="idDatumRangeDateRangePicker"  value="{view>/params/datumRange}" displayFormat="dd/MM/yyyy" valueFormat="yyyyMMdd" width="50%" class="sapUiTinyMarginBottom" />
                                 <Label text="{i18n>lblPltyp}" />
-                                <Input id="inpPltyp" value="{view>/params/pltyp}" placeholder="Ex: 01,02" width="50%" class="sapUiTinyMarginBottom" />
+                                <Input
+                                    id="inpPltyp"
+                                    value="{view>/params/pltyp}"
+                                    placeholder="Ex: 01,02"
+                                    width="50%"
+                                    class="sapUiTinyMarginBottom"
+                                    showValueHelp="true"
+                                    valueHelpRequest=".onPltypInputValueHelpRequest" />
                                 <Label text="{i18n>lblMater}" />
                                 <Input id="inpMater" value="{view>/params/mater}" placeholder="Material" width="50%"
                                     showValueHelp="true" valueHelpRequest=".onMaterInputValueHelpRequest" />
@@ -95,11 +102,31 @@
                                     <CheckBox text="ST" selected="{view>/params/st}" class="sapUiSmallMarginBegin" />
                                 </HBox>
                                 <Label text="{i18n>lblGruop}" />
-                                <Input id="inpGruop" value="{view>/params/gruop}" placeholder="Grupo (CSV)" width="50%" class="sapUiTinyMarginBottom" />
+                                <Input
+                                    id="inpGruop"
+                                    value="{view>/params/gruop}"
+                                    placeholder="Grupo"
+                                    width="50%"
+                                    class="sapUiTinyMarginBottom"
+                                    showValueHelp="true"
+                                    valueHelpRequest=".onGruopInputValueHelpRequest" />
                                 <Label text="{i18n>lblShipf}" />
-                                <Input id="inpShipf" value="{view>/params/shipf}" placeholder="Ship From (CSV)" width="50%" class="sapUiTinyMarginBottom" />
+                                <Input
+                                    id="inpShipf"
+                                    value="{view>/params/shipf}"
+                                    placeholder="Ship From"
+                                    width="50%"
+                                    class="sapUiTinyMarginBottom"
+                                    showValueHelp="true"
+                                    valueHelpRequest=".onShipfInputValueHelpRequest" />
                                 <Label text="{i18n>lblShipt}" />
-                                <Input id="inpShipt" value="{view>/params/shipt}" placeholder="Ship To (CSV)" width="50%" />
+                                <Input
+                                    id="inpShipt"
+                                    value="{view>/params/shipt}"
+                                    placeholder="Ship To"
+                                    width="50%"
+                                    showValueHelp="true"
+                                    valueHelpRequest=".onShiptInputValueHelpRequest" />
                             </VBox>
                         </Panel>
 
@@ -174,7 +201,7 @@
                                 <Label text="{i18n>lblErdat}" />
                                 <DateRangeSelection id="idErdatRangeDateRangePicker" value="{view>/params/erdatRange}" displayFormat="dd/MM/yyyy" valueFormat="yyyyMMdd" width="50%" class="sapUiTinyMarginBottom" />
                                 <Label text="{i18n>lblVbeln}" />
-                                <Input id="inpVbeln" value="{view>/params/vbeln}" placeholder="Nº OV (CSV)" width="50%" />
+                                <Input id="inpVbeln" value="{view>/params/vbeln}" placeholder="Nº OV" width="50%" />
                             </VBox>
                         </Panel>
 

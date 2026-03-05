@@ -1,0 +1,17 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+    <SelectDialog
+        id="idPltypSelectDialog"
+        title="Selecione os Tipos de Lista de Preco"
+        items="{view>/priceListTypes}"
+        search=".onVHPltypSearch"
+        confirm=".onVHPltypConfirm"
+        cancel=".onVHPltypConfirm"
+        multiSelect="true">
+        <StandardListItem
+            id="idPltypStandardListItem"
+            title="{view>pricelisttype}"
+            description="{view>pricelisttypename}" />
+    </SelectDialog>
+</core:FragmentDefinition>

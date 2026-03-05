@@ -1,0 +1,16 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+    <SelectDialog
+        id="idGruopSelectDialog"
+        title="Selecione os Grupos de Imposto"
+        items="{view>/groups}"
+        search=".onVHGruopSearch"
+        confirm=".onVHGruopConfirm"
+        cancel=".onVHGruopConfirm"
+        multiSelect="true">
+        <StandardListItem
+            id="idGruopStandardListItem"
+            title="{view>gruop}" />
+    </SelectDialog>
+</core:FragmentDefinition>

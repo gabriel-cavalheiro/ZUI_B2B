@@ -107,6 +107,92 @@ sap.ui.define([], function () {
         },
 
         /**
+         * Carrega tipos de lista de preco (Pltyp)
+         */
+        loadPriceListTypes: function (oModel) {
+            var that = this;
+            return new Promise(function (resolve, reject) {
+                oModel.read("/ZshPricelistypSet", {
+                    success: function (oData) {
+                        var aItems = (oData.results || []).map(function (o) {
+                            var oLower = that._toLowerCaseObject(o);
+                            var sType = o.Pricelisttype || o.Pltyp || oLower.pricelisttype || oLower.pltyp || "";
+                            var sTypeName = o.Pricelisttypename || o.Pltypname || oLower.pricelisttypename || oLower.pltypname || "";
+                            return Object.assign(oLower, {
+                                pricelisttype: sType,
+                                pricelisttypename: sTypeName
+                            });
+                        }).filter(function (oItem) {
+                            return !!oItem.pricelisttype;
+                        });
+                        resolve(aItems);
+                    },
+                    error: function (oError) {
+                        reject(oError);
+                    }
+                });
+            });
+        },
+
+        /**
+         * Carrega grupos de imposto (Gruop)
+         */
+        loadGroups: function (oModel) {
+            var that = this;
+            return new Promise(function (resolve, reject) {
+                oModel.read("/ZshGroupSet", {
+                    success: function (oData) {
+                        var aItems = (oData.results || []).map(function (o) {
+                            var oLower = that._toLowerCaseObject(o);
+                            var sGroup = o.Gruop || o.Group || oLower.gruop || oLower.group || "";
+                            return Object.assign(oLower, {
+                                gruop: sGroup
+                            });
+                        }).filter(function (oItem) {
+                            return !!oItem.gruop;
+                        });
+                        resolve(aItems);
+                    },
+                    error: function (oError) {
+                        reject(oError);
+                    }
+                });
+            });
+        },
+
+        /**
+         * Carrega combinacoes de Ship From/Ship To para value help dependente
+         */
+        loadShipIcms: function (oModel) {
+            var that = this;
+            return new Promise(function (resolve, reject) {
+                oModel.read("/ZshShipIcmsSet", {
+                    success: function (oData) {
+                        var aItems = (oData.results || []).map(function (o) {
+                            var oLower = that._toLowerCaseObject(o);
+                            var sShipFrom = o.Shipfrom || o.ShipFrom || oLower.shipfrom || "";
+                            var sShipTo = o.Shipto || o.ShipTo || oLower.shipto || "";
+                            return Object.assign(oLower, {
+                                shipfrom: sShipFrom,
+                                shipto: sShipTo,
+                                land1: o.Land1 || oLower.land1 || "",
+                                rate: o.Rate != null ? o.Rate : oLower.rate,
+                                base: o.Base != null ? o.Base : oLower.base,
+                                gruop: o.Gruop || o.Group || oLower.gruop || oLower.group || ""
+                            });
+                        }).filter(function (oItem) {
+                            return !!oItem.shipfrom && !!oItem.shipto;
+                        });
+                        resolve(aItems);
+                    },
+                    error: function (oError) {
+                        reject(oError);
+                    }
+                });
+            });
+        },
+
+        /**
          * Busca produtos no backend (server-side) para evitar carregar todo o dataset no VH
          */
         searchProdutos: function (oModel, oCriteria) {
