@@ -1,33 +1,24 @@
-```
-*&---------------------------------------------------------------------*
-*&  Projeto...: ZUI_SD_B2B — APP FIORI UI5 B2B - ZSD277
-*&---------------------------------------------------------------------*
-*&  Desenvolvedor: Gabriel Cavalheiro
-*&  Empresa......: Prestativ (Consultoria)
-*&  Data.........: 05.03.2026
-*&---------------------------------------------------------------------*
-*&  Descrição...: Documentação técnica de funcionamento do app Fiori
-*&               de Envio de Cargas B2B. Cobre arquitetura, fluxos,
-*&               processadores, parâmetros e integração OData.
-*&---------------------------------------------------------------------*
-*&  Requests OData (ZSD_B2B_SRV):
-*&
-*&  [ Entity Sets — Leitura ]
-*&    GET /ZshOrgVendasSet          → Organizações de Vendas
-*&    GET /ZshClientesSet           → Clientes
-*&    GET /ZshProdutosSet           → Produtos (com paginação)
-*&    GET /YpmtlBranchSet           → Filiais (NF)
-*&    GET /ZshPricelistypSet        → Tipos de Lista de Preço
-*&    GET /ZshGroupSet              → Grupos de Imposto
-*&    GET /ZshShipIcmsSet           → Combinações Ship From/To (ICMS)
-*&
-*&  [ Function Imports — Execução ]
-*&    GET /ExecutarProcessador      → Executa 1 processador
-*&                                    Retorno: Collection(B2BMessage)
-*&    GET /ExecutarMultiplos        → Executa N processadores
-*&                                    Retorno: Collection(B2BResult)
-*&---------------------------------------------------------------------*
-```
+| Campo         | Detalhe                                                                                  |
+|---------------|------------------------------------------------------------------------------------------|
+| **Projeto**   | ZUI_SD_B2B — APP FIORI UI5 B2B · ZSD277                                                 |
+| **Dev**       | Gabriel Cavalheiro                                                                       |
+| **Empresa**   | Prestativ (Consultoria)                                                                  |
+| **Data**      | 05.03.2026                                                                               |
+| **Descrição** | Documentação técnica do app Fiori de Envio de Cargas B2B. Cobre arquitetura, fluxos, processadores, parâmetros e integração OData. |
+
+**Requests OData — `ZSD_B2B_SRV`**
+
+| Tipo             | Endpoint                | Descrição                              |
+|------------------|-------------------------|----------------------------------------|
+| Entity Set (GET) | `/ZshOrgVendasSet`      | Organizações de Vendas                 |
+| Entity Set (GET) | `/ZshClientesSet`       | Clientes                               |
+| Entity Set (GET) | `/ZshProdutosSet`       | Produtos (com paginação)               |
+| Entity Set (GET) | `/YpmtlBranchSet`       | Filiais (NF)                           |
+| Entity Set (GET) | `/ZshPricelistypSet`    | Tipos de Lista de Preço                |
+| Entity Set (GET) | `/ZshGroupSet`          | Grupos de Imposto                      |
+| Entity Set (GET) | `/ZshShipIcmsSet`       | Combinações Ship From/To (ICMS)        |
+| Function (GET)   | `/ExecutarProcessador`  | Executa 1 processador → `Collection(B2BMessage)` |
+| Function (GET)   | `/ExecutarMultiplos`    | Executa N processadores → `Collection(B2BResult)` |
 
 ---
 
