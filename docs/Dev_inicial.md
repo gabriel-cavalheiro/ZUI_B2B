@@ -1,4 +1,4 @@
-| Campo         | Detalhe                                                                                  |
+|               | Detalhe                                                                                  |
 |---------------|------------------------------------------------------------------------------------------|
 | **Projeto**   | ZUI_SD_B2B — APP FIORI UI5 B2B · ZSD277                                                  |
 | **Dev**       | Gabriel Cavalheiro                                                                       |
