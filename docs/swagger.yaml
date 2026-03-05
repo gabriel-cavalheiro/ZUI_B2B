@@ -1,0 +1,2204 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Service for namespace ZSD_B2B_SRV",
+        "version": "1.0.0",
+        "description": "This service is located at [https://services.OData.org/service-root/](https://services.OData.org/service-root/)\n\n## Entity Data Model\n![ER Diagram](https://yuml.me/diagram/class/[B2BMessage{bg:orange}],[B2BResult{bg:orange}],[ZshClientes{bg:orange}],[ZshProdutos{bg:orange}],[ZshOrgVendas{bg:orange}],[EnviarNF{bg:orange}],[YpmtlBranch{bg:orange}],[ZshShipIcms{bg:orange}],[ZshPricelistyp{bg:orange}],[ZshGroup{bg:orange}],[B2BMessageSet{bg:dodgerblue}]++-*>[B2BMessage],[B2BResultSet{bg:dodgerblue}]++-*>[B2BResult],[ZshClientesSet{bg:dodgerblue}]++-*>[ZshClientes],[ZshProdutosSet{bg:dodgerblue}]++-*>[ZshProdutos],[ZshOrgVendasSet{bg:dodgerblue}]++-*>[ZshOrgVendas],[EnviarNFSet{bg:dodgerblue}]++-*>[EnviarNF],[YpmtlBranchSet{bg:dodgerblue}]++-*>[YpmtlBranch],[ZshShipIcmsSet{bg:dodgerblue}]++-*>[ZshShipIcms],[ZshPricelistypSet{bg:dodgerblue}]++-*>[ZshPricelistyp],[ZshGroupSet{bg:dodgerblue}]++-*>[ZshGroup],[ExecutarMultiplos{bg:dodgerblue}]-*>[B2BResult],[ExecutarProcessador{bg:dodgerblue}]-*>[B2BMessage])\n\n### Legend\n![Legend](https://yuml.me/diagram/plain;dir:TB;scale:60/class/[External.Type{bg:whitesmoke}],[ComplexType],[EntityType{bg:orange}],[EntitySet/Singleton/Operation{bg:dodgerblue}])"
+    },
+    "servers": [
+        {
+            "url": "https://services.OData.org/service-root"
+        }
+    ],
+    "tags": [
+        {
+            "name": "B2BMessageSet"
+        },
+        {
+            "name": "B2BResultSet"
+        },
+        {
+            "name": "ZshClientesSet"
+        },
+        {
+            "name": "ZshProdutosSet"
+        },
+        {
+            "name": "ZshOrgVendasSet"
+        },
+        {
+            "name": "EnviarNFSet"
+        },
+        {
+            "name": "YpmtlBranchSet"
+        },
+        {
+            "name": "ZshShipIcmsSet"
+        },
+        {
+            "name": "ZshPricelistypSet"
+        },
+        {
+            "name": "ZshGroupSet"
+        }
+    ],
+    "paths": {
+        "/ZshClientesSet": {
+            "get": {
+                "summary": "Get entities from ZshClientesSet",
+                "tags": [
+                    "ZshClientesSet"
+                ],
+                "parameters": [
+                    {
+                        "name": "$filter",
+                        "in": "query",
+                        "description": "Filter items by property values, see [Filtering](https://help.sap.com/doc/5890d27be418427993fafa6722cdc03b/Cloud/en-US/OdataV2.pdf#page=64)",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "$ref": "#/components/parameters/count"
+                    },
+                    {
+                        "name": "$select",
+                        "in": "query",
+                        "description": "Select properties to be returned, see [Select](https://help.sap.com/doc/5890d27be418427993fafa6722cdc03b/Cloud/en-US/OdataV2.pdf#page=68)",
+                        "explode": false,
+                        "schema": {
+                            "type": "array",
+                            "uniqueItems": true,
+                            "items": {
+                                "type": "string",
+                                "enum": [
+                                    "Customer",
+                                    "Customername",
+                                    "Cityname"
+                                ]
+                            }
+                        }
+                    },
+                    {
+                        "name": "$format",
+                        "in": "query",
+                        "description": "The format of the response. Supported values: json, xml",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Retrieved entities",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "title": "Wrapper",
+                                    "type": "object",
+                                    "properties": {
+                                        "d": {
+                                            "title": "Collection of ZshClientes",
+                                            "type": "object",
+                                            "properties": {
+                                                "__count": {
+                                                    "$ref": "#/components/schemas/count"
+                                                },
+                                                "results": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "$ref": "#/components/schemas/ZSD_B2B_SRV.ZshClientes"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "4XX": {
+                        "$ref": "#/components/responses/error"
+                    }
+                }
+            }
+        },
+        "/ZshClientesSet('{Customer}')": {
+            "parameters": [
+                {
+                    "name": "Customer",
+                    "in": "path",
+                    "required": true,
+                    "description": "Cliente",
+                    "schema": {
+                        "type": "string",
+                        "maxLength": 10
+                    }
+                }
+            ],
+            "get": {
+                "summary": "Get entity from ZshClientesSet by key",
+                "tags": [
+                    "ZshClientesSet"
+                ],
+                "parameters": [
+                    {
+                        "name": "$select",
+                        "in": "query",
+                        "description": "Select properties to be returned, see [Select](https://help.sap.com/doc/5890d27be418427993fafa6722cdc03b/Cloud/en-US/OdataV2.pdf#page=68)",
+                        "explode": false,
+                        "schema": {
+                            "type": "array",
+                            "uniqueItems": true,
+                            "items": {
+                                "type": "string",
+                                "enum": [
+                                    "Customer",
+                                    "Customername",
+                                    "Cityname"
+                                ]
+                            }
+                        }
+                    },
+                    {
+                        "name": "$format",
+                        "in": "query",
+                        "description": "The format of the response. Supported values: json, xml",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Retrieved entity",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "title": "ZshClientes",
+                                    "type": "object",
+                                    "properties": {
+                                        "d": {
+                                            "$ref": "#/components/schemas/ZSD_B2B_SRV.ZshClientes"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "4XX": {
+                        "$ref": "#/components/responses/error"
+                    }
+                }
+            }
+        },
+        "/ZshProdutosSet": {
+            "get": {
+                "summary": "Get entities from ZshProdutosSet",
+                "tags": [
+                    "ZshProdutosSet"
+                ],
+                "parameters": [
+                    {
+                        "name": "$filter",
+                        "in": "query",
+                        "description": "Filter items by property values, see [Filtering](https://help.sap.com/doc/5890d27be418427993fafa6722cdc03b/Cloud/en-US/OdataV2.pdf#page=64)",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "$ref": "#/components/parameters/count"
+                    },
+                    {
+                        "name": "$select",
+                        "in": "query",
+                        "description": "Select properties to be returned, see [Select](https://help.sap.com/doc/5890d27be418427993fafa6722cdc03b/Cloud/en-US/OdataV2.pdf#page=68)",
+                        "explode": false,
+                        "schema": {
+                            "type": "array",
+                            "uniqueItems": true,
+                            "items": {
+                                "type": "string",
+                                "enum": [
+                                    "Product",
+                                    "Productname"
+                                ]
+                            }
+                        }
+                    },
+                    {
+                        "name": "$format",
+                        "in": "query",
+                        "description": "The format of the response. Supported values: json, xml",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Retrieved entities",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "title": "Wrapper",
+                                    "type": "object",
+                                    "properties": {
+                                        "d": {
+                                            "title": "Collection of ZshProdutos",
+                                            "type": "object",
+                                            "properties": {
+                                                "__count": {
+                                                    "$ref": "#/components/schemas/count"
+                                                },
+                                                "results": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "$ref": "#/components/schemas/ZSD_B2B_SRV.ZshProdutos"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "4XX": {
+                        "$ref": "#/components/responses/error"
+                    }
+                }
+            }
+        },
+        "/ZshProdutosSet('{Product}')": {
+            "parameters": [
+                {
+                    "name": "Product",
+                    "in": "path",
+                    "required": true,
+                    "description": "Material",
+                    "schema": {
+                        "type": "string",
+                        "maxLength": 40
+                    }
+                }
+            ],
+            "get": {
+                "summary": "Get entity from ZshProdutosSet by key",
+                "tags": [
+                    "ZshProdutosSet"
+                ],
+                "parameters": [
+                    {
+                        "name": "$select",
+                        "in": "query",
+                        "description": "Select properties to be returned, see [Select](https://help.sap.com/doc/5890d27be418427993fafa6722cdc03b/Cloud/en-US/OdataV2.pdf#page=68)",
+                        "explode": false,
+                        "schema": {
+                            "type": "array",
+                            "uniqueItems": true,
+                            "items": {
+                                "type": "string",
+                                "enum": [
+                                    "Product",
+                                    "Productname"
+                                ]
+                            }
+                        }
+                    },
+                    {
+                        "name": "$format",
+                        "in": "query",
+                        "description": "The format of the response. Supported values: json, xml",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Retrieved entity",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "title": "ZshProdutos",
+                                    "type": "object",
+                                    "properties": {
+                                        "d": {
+                                            "$ref": "#/components/schemas/ZSD_B2B_SRV.ZshProdutos"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "4XX": {
+                        "$ref": "#/components/responses/error"
+                    }
+                }
+            }
+        },
+        "/ZshOrgVendasSet": {
+            "get": {
+                "summary": "Get entities from ZshOrgVendasSet",
+                "tags": [
+                    "ZshOrgVendasSet"
+                ],
+                "parameters": [
+                    {
+                        "name": "$filter",
+                        "in": "query",
+                        "description": "Filter items by property values, see [Filtering](https://help.sap.com/doc/5890d27be418427993fafa6722cdc03b/Cloud/en-US/OdataV2.pdf#page=64)",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "$ref": "#/components/parameters/count"
+                    },
+                    {
+                        "name": "$select",
+                        "in": "query",
+                        "description": "Select properties to be returned, see [Select](https://help.sap.com/doc/5890d27be418427993fafa6722cdc03b/Cloud/en-US/OdataV2.pdf#page=68)",
+                        "explode": false,
+                        "schema": {
+                            "type": "array",
+                            "uniqueItems": true,
+                            "items": {
+                                "type": "string",
+                                "enum": [
+                                    "Salesorganization",
+                                    "Salesorganizationname"
+                                ]
+                            }
+                        }
+                    },
+                    {
+                        "name": "$format",
+                        "in": "query",
+                        "description": "The format of the response. Supported values: json, xml",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Retrieved entities",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "title": "Wrapper",
+                                    "type": "object",
+                                    "properties": {
+                                        "d": {
+                                            "title": "Collection of ZshOrgVendas",
+                                            "type": "object",
+                                            "properties": {
+                                                "__count": {
+                                                    "$ref": "#/components/schemas/count"
+                                                },
+                                                "results": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "$ref": "#/components/schemas/ZSD_B2B_SRV.ZshOrgVendas"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "4XX": {
+                        "$ref": "#/components/responses/error"
+                    }
+                }
+            }
+        },
+        "/ZshOrgVendasSet('{Salesorganization}')": {
+            "parameters": [
+                {
+                    "name": "Salesorganization",
+                    "in": "path",
+                    "required": true,
+                    "description": "Org.vendas",
+                    "schema": {
+                        "type": "string",
+                        "maxLength": 4
+                    }
+                }
+            ],
+            "get": {
+                "summary": "Get entity from ZshOrgVendasSet by key",
+                "tags": [
+                    "ZshOrgVendasSet"
+                ],
+                "parameters": [
+                    {
+                        "name": "$select",
+                        "in": "query",
+                        "description": "Select properties to be returned, see [Select](https://help.sap.com/doc/5890d27be418427993fafa6722cdc03b/Cloud/en-US/OdataV2.pdf#page=68)",
+                        "explode": false,
+                        "schema": {
+                            "type": "array",
+                            "uniqueItems": true,
+                            "items": {
+                                "type": "string",
+                                "enum": [
+                                    "Salesorganization",
+                                    "Salesorganizationname"
+                                ]
+                            }
+                        }
+                    },
+                    {
+                        "name": "$format",
+                        "in": "query",
+                        "description": "The format of the response. Supported values: json, xml",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Retrieved entity",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "title": "ZshOrgVendas",
+                                    "type": "object",
+                                    "properties": {
+                                        "d": {
+                                            "$ref": "#/components/schemas/ZSD_B2B_SRV.ZshOrgVendas"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "4XX": {
+                        "$ref": "#/components/responses/error"
+                    }
+                }
+            }
+        },
+        "/YpmtlBranchSet": {
+            "get": {
+                "summary": "Get entities from YpmtlBranchSet",
+                "tags": [
+                    "YpmtlBranchSet"
+                ],
+                "parameters": [
+                    {
+                        "name": "$filter",
+                        "in": "query",
+                        "description": "Filter items by property values, see [Filtering](https://help.sap.com/doc/5890d27be418427993fafa6722cdc03b/Cloud/en-US/OdataV2.pdf#page=64)",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "$ref": "#/components/parameters/count"
+                    },
+                    {
+                        "name": "$select",
+                        "in": "query",
+                        "description": "Select properties to be returned, see [Select](https://help.sap.com/doc/5890d27be418427993fafa6722cdc03b/Cloud/en-US/OdataV2.pdf#page=68)",
+                        "explode": false,
+                        "schema": {
+                            "type": "array",
+                            "uniqueItems": true,
+                            "items": {
+                                "type": "string",
+                                "enum": [
+                                    "Branch",
+                                    "Bukrs",
+                                    "Name"
+                                ]
+                            }
+                        }
+                    },
+                    {
+                        "name": "$format",
+                        "in": "query",
+                        "description": "The format of the response. Supported values: json, xml",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Retrieved entities",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "title": "Wrapper",
+                                    "type": "object",
+                                    "properties": {
+                                        "d": {
+                                            "title": "Collection of YpmtlBranch",
+                                            "type": "object",
+                                            "properties": {
+                                                "__count": {
+                                                    "$ref": "#/components/schemas/count"
+                                                },
+                                                "results": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "$ref": "#/components/schemas/ZSD_B2B_SRV.YpmtlBranch"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "4XX": {
+                        "$ref": "#/components/responses/error"
+                    }
+                }
+            }
+        },
+        "/YpmtlBranchSet('{Branch}')": {
+            "parameters": [
+                {
+                    "name": "Branch",
+                    "in": "path",
+                    "required": true,
+                    "description": "Loc.negócios",
+                    "schema": {
+                        "type": "string",
+                        "maxLength": 4
+                    }
+                }
+            ],
+            "get": {
+                "summary": "Get entity from YpmtlBranchSet by key",
+                "tags": [
+                    "YpmtlBranchSet"
+                ],
+                "parameters": [
+                    {
+                        "name": "$select",
+                        "in": "query",
+                        "description": "Select properties to be returned, see [Select](https://help.sap.com/doc/5890d27be418427993fafa6722cdc03b/Cloud/en-US/OdataV2.pdf#page=68)",
+                        "explode": false,
+                        "schema": {
+                            "type": "array",
+                            "uniqueItems": true,
+                            "items": {
+                                "type": "string",
+                                "enum": [
+                                    "Branch",
+                                    "Bukrs",
+                                    "Name"
+                                ]
+                            }
+                        }
+                    },
+                    {
+                        "name": "$format",
+                        "in": "query",
+                        "description": "The format of the response. Supported values: json, xml",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Retrieved entity",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "title": "YpmtlBranch",
+                                    "type": "object",
+                                    "properties": {
+                                        "d": {
+                                            "$ref": "#/components/schemas/ZSD_B2B_SRV.YpmtlBranch"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "4XX": {
+                        "$ref": "#/components/responses/error"
+                    }
+                }
+            }
+        },
+        "/ZshShipIcmsSet": {
+            "get": {
+                "summary": "Get entities from ZshShipIcmsSet",
+                "tags": [
+                    "ZshShipIcmsSet"
+                ],
+                "parameters": [
+                    {
+                        "name": "$filter",
+                        "in": "query",
+                        "description": "Filter items by property values, see [Filtering](https://help.sap.com/doc/5890d27be418427993fafa6722cdc03b/Cloud/en-US/OdataV2.pdf#page=64)",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "$ref": "#/components/parameters/count"
+                    },
+                    {
+                        "name": "$select",
+                        "in": "query",
+                        "description": "Select properties to be returned, see [Select](https://help.sap.com/doc/5890d27be418427993fafa6722cdc03b/Cloud/en-US/OdataV2.pdf#page=68)",
+                        "explode": false,
+                        "schema": {
+                            "type": "array",
+                            "uniqueItems": true,
+                            "items": {
+                                "type": "string",
+                                "enum": [
+                                    "Shipfrom",
+                                    "Shipto",
+                                    "Land1",
+                                    "Rate",
+                                    "Base"
+                                ]
+                            }
+                        }
+                    },
+                    {
+                        "name": "$format",
+                        "in": "query",
+                        "description": "The format of the response. Supported values: json, xml",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Retrieved entities",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "title": "Wrapper",
+                                    "type": "object",
+                                    "properties": {
+                                        "d": {
+                                            "title": "Collection of ZshShipIcms",
+                                            "type": "object",
+                                            "properties": {
+                                                "__count": {
+                                                    "$ref": "#/components/schemas/count"
+                                                },
+                                                "results": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "$ref": "#/components/schemas/ZSD_B2B_SRV.ZshShipIcms"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "4XX": {
+                        "$ref": "#/components/responses/error"
+                    }
+                }
+            }
+        },
+        "/ZshShipIcmsSet(Shipfrom='{Shipfrom}',Shipto='{Shipto}')": {
+            "parameters": [
+                {
+                    "name": "Shipfrom",
+                    "in": "path",
+                    "required": true,
+                    "description": "Emissor",
+                    "schema": {
+                        "type": "string",
+                        "maxLength": 3
+                    }
+                },
+                {
+                    "name": "Shipto",
+                    "in": "path",
+                    "required": true,
+                    "description": "Receptor",
+                    "schema": {
+                        "type": "string",
+                        "maxLength": 3
+                    }
+                }
+            ],
+            "get": {
+                "summary": "Get entity from ZshShipIcmsSet by key",
+                "tags": [
+                    "ZshShipIcmsSet"
+                ],
+                "parameters": [
+                    {
+                        "name": "$select",
+                        "in": "query",
+                        "description": "Select properties to be returned, see [Select](https://help.sap.com/doc/5890d27be418427993fafa6722cdc03b/Cloud/en-US/OdataV2.pdf#page=68)",
+                        "explode": false,
+                        "schema": {
+                            "type": "array",
+                            "uniqueItems": true,
+                            "items": {
+                                "type": "string",
+                                "enum": [
+                                    "Shipfrom",
+                                    "Shipto",
+                                    "Land1",
+                                    "Rate",
+                                    "Base"
+                                ]
+                            }
+                        }
+                    },
+                    {
+                        "name": "$format",
+                        "in": "query",
+                        "description": "The format of the response. Supported values: json, xml",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Retrieved entity",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "title": "ZshShipIcms",
+                                    "type": "object",
+                                    "properties": {
+                                        "d": {
+                                            "$ref": "#/components/schemas/ZSD_B2B_SRV.ZshShipIcms"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "4XX": {
+                        "$ref": "#/components/responses/error"
+                    }
+                }
+            }
+        },
+        "/ZshPricelistypSet": {
+            "get": {
+                "summary": "Get entities from ZshPricelistypSet",
+                "tags": [
+                    "ZshPricelistypSet"
+                ],
+                "parameters": [
+                    {
+                        "name": "$filter",
+                        "in": "query",
+                        "description": "Filter items by property values, see [Filtering](https://help.sap.com/doc/5890d27be418427993fafa6722cdc03b/Cloud/en-US/OdataV2.pdf#page=64)",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "$ref": "#/components/parameters/count"
+                    },
+                    {
+                        "name": "$select",
+                        "in": "query",
+                        "description": "Select properties to be returned, see [Select](https://help.sap.com/doc/5890d27be418427993fafa6722cdc03b/Cloud/en-US/OdataV2.pdf#page=68)",
+                        "explode": false,
+                        "schema": {
+                            "type": "array",
+                            "uniqueItems": true,
+                            "items": {
+                                "type": "string",
+                                "enum": [
+                                    "Pricelisttype",
+                                    "Pricelisttypename"
+                                ]
+                            }
+                        }
+                    },
+                    {
+                        "name": "$format",
+                        "in": "query",
+                        "description": "The format of the response. Supported values: json, xml",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Retrieved entities",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "title": "Wrapper",
+                                    "type": "object",
+                                    "properties": {
+                                        "d": {
+                                            "title": "Collection of ZshPricelistyp",
+                                            "type": "object",
+                                            "properties": {
+                                                "__count": {
+                                                    "$ref": "#/components/schemas/count"
+                                                },
+                                                "results": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "$ref": "#/components/schemas/ZSD_B2B_SRV.ZshPricelistyp"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "4XX": {
+                        "$ref": "#/components/responses/error"
+                    }
+                }
+            }
+        },
+        "/ZshPricelistypSet('{Pricelisttype}')": {
+            "parameters": [
+                {
+                    "name": "Pricelisttype",
+                    "in": "path",
+                    "required": true,
+                    "description": "Tp.lista preços",
+                    "schema": {
+                        "type": "string",
+                        "maxLength": 2
+                    }
+                }
+            ],
+            "get": {
+                "summary": "Get entity from ZshPricelistypSet by key",
+                "tags": [
+                    "ZshPricelistypSet"
+                ],
+                "parameters": [
+                    {
+                        "name": "$select",
+                        "in": "query",
+                        "description": "Select properties to be returned, see [Select](https://help.sap.com/doc/5890d27be418427993fafa6722cdc03b/Cloud/en-US/OdataV2.pdf#page=68)",
+                        "explode": false,
+                        "schema": {
+                            "type": "array",
+                            "uniqueItems": true,
+                            "items": {
+                                "type": "string",
+                                "enum": [
+                                    "Pricelisttype",
+                                    "Pricelisttypename"
+                                ]
+                            }
+                        }
+                    },
+                    {
+                        "name": "$format",
+                        "in": "query",
+                        "description": "The format of the response. Supported values: json, xml",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Retrieved entity",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "title": "ZshPricelistyp",
+                                    "type": "object",
+                                    "properties": {
+                                        "d": {
+                                            "$ref": "#/components/schemas/ZSD_B2B_SRV.ZshPricelistyp"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "4XX": {
+                        "$ref": "#/components/responses/error"
+                    }
+                }
+            }
+        },
+        "/ZshGroupSet": {
+            "get": {
+                "summary": "Get entities from ZshGroupSet",
+                "tags": [
+                    "ZshGroupSet"
+                ],
+                "parameters": [
+                    {
+                        "name": "$filter",
+                        "in": "query",
+                        "description": "Filter items by property values, see [Filtering](https://help.sap.com/doc/5890d27be418427993fafa6722cdc03b/Cloud/en-US/OdataV2.pdf#page=64)",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "$ref": "#/components/parameters/count"
+                    },
+                    {
+                        "name": "$select",
+                        "in": "query",
+                        "description": "Select properties to be returned, see [Select](https://help.sap.com/doc/5890d27be418427993fafa6722cdc03b/Cloud/en-US/OdataV2.pdf#page=68)",
+                        "explode": false,
+                        "schema": {
+                            "type": "array",
+                            "uniqueItems": true,
+                            "items": {
+                                "type": "string",
+                                "enum": [
+                                    "Gruop"
+                                ]
+                            }
+                        }
+                    },
+                    {
+                        "name": "$format",
+                        "in": "query",
+                        "description": "The format of the response. Supported values: json, xml",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Retrieved entities",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "title": "Wrapper",
+                                    "type": "object",
+                                    "properties": {
+                                        "d": {
+                                            "title": "Collection of ZshGroup",
+                                            "type": "object",
+                                            "properties": {
+                                                "__count": {
+                                                    "$ref": "#/components/schemas/count"
+                                                },
+                                                "results": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "$ref": "#/components/schemas/ZSD_B2B_SRV.ZshGroup"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "4XX": {
+                        "$ref": "#/components/responses/error"
+                    }
+                }
+            }
+        },
+        "/ZshGroupSet('{Gruop}')": {
+            "parameters": [
+                {
+                    "name": "Gruop",
+                    "in": "path",
+                    "required": true,
+                    "description": "Grupo imposto",
+                    "schema": {
+                        "type": "string",
+                        "maxLength": 2
+                    }
+                }
+            ],
+            "get": {
+                "summary": "Get entity from ZshGroupSet by key",
+                "tags": [
+                    "ZshGroupSet"
+                ],
+                "parameters": [
+                    {
+                        "name": "$select",
+                        "in": "query",
+                        "description": "Select properties to be returned, see [Select](https://help.sap.com/doc/5890d27be418427993fafa6722cdc03b/Cloud/en-US/OdataV2.pdf#page=68)",
+                        "explode": false,
+                        "schema": {
+                            "type": "array",
+                            "uniqueItems": true,
+                            "items": {
+                                "type": "string",
+                                "enum": [
+                                    "Gruop"
+                                ]
+                            }
+                        }
+                    },
+                    {
+                        "name": "$format",
+                        "in": "query",
+                        "description": "The format of the response. Supported values: json, xml",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Retrieved entity",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "title": "ZshGroup",
+                                    "type": "object",
+                                    "properties": {
+                                        "d": {
+                                            "$ref": "#/components/schemas/ZSD_B2B_SRV.ZshGroup"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "4XX": {
+                        "$ref": "#/components/responses/error"
+                    }
+                }
+            }
+        },
+        "/ExecutarMultiplos": {
+            "get": {
+                "summary": "Invoke function ExecutarMultiplos",
+                "tags": [
+                    "B2BResultSet"
+                ],
+                "parameters": [
+                    {
+                        "name": "Tipos",
+                        "in": "query",
+                        "required": true,
+                        "description": "Value needs to be enclosed in single quotes",
+                        "schema": {
+                            "type": "string",
+                            "pattern": "^'[^']*(''[^']*)*'$"
+                        }
+                    },
+                    {
+                        "name": "CargaInicial",
+                        "in": "query",
+                        "description": "Código",
+                        "schema": {
+                            "type": "boolean",
+                            "nullable": true
+                        }
+                    },
+                    {
+                        "name": "Vkorg",
+                        "in": "query",
+                        "description": "Value needs to be enclosed in single quotes",
+                        "schema": {
+                            "type": "string",
+                            "nullable": true,
+                            "pattern": "^'[^']*(''[^']*)*'$"
+                        }
+                    },
+                    {
+                        "name": "Datum",
+                        "in": "query",
+                        "description": "Value needs to be enclosed in single quotes",
+                        "schema": {
+                            "type": "string",
+                            "nullable": true,
+                            "pattern": "^'[^']*(''[^']*)*'$"
+                        }
+                    },
+                    {
+                        "name": "Datimp",
+                        "in": "query",
+                        "description": "Value needs to be enclosed in single quotes",
+                        "schema": {
+                            "type": "string",
+                            "nullable": true,
+                            "pattern": "^'[^']*(''[^']*)*'$"
+                        }
+                    },
+                    {
+                        "name": "Icms",
+                        "in": "query",
+                        "description": "Código",
+                        "schema": {
+                            "type": "boolean",
+                            "nullable": true
+                        }
+                    },
+                    {
+                        "name": "Ipi",
+                        "in": "query",
+                        "description": "Código",
+                        "schema": {
+                            "type": "boolean",
+                            "nullable": true
+                        }
+                    },
+                    {
+                        "name": "ST",
+                        "in": "query",
+                        "description": "Código",
+                        "schema": {
+                            "type": "boolean",
+                            "nullable": true
+                        }
+                    },
+                    {
+                        "name": "Positivados",
+                        "in": "query",
+                        "description": "Código",
+                        "schema": {
+                            "type": "boolean",
+                            "nullable": true
+                        }
+                    },
+                    {
+                        "name": "Rejeitados",
+                        "in": "query",
+                        "description": "Código",
+                        "schema": {
+                            "type": "boolean",
+                            "nullable": true
+                        }
+                    },
+                    {
+                        "name": "Vtweg",
+                        "in": "query",
+                        "description": "Value needs to be enclosed in single quotes",
+                        "schema": {
+                            "type": "string",
+                            "nullable": true,
+                            "pattern": "^'[^']*(''[^']*)*'$"
+                        }
+                    },
+                    {
+                        "name": "Werks",
+                        "in": "query",
+                        "description": "Value needs to be enclosed in single quotes",
+                        "schema": {
+                            "type": "string",
+                            "nullable": true,
+                            "pattern": "^'[^']*(''[^']*)*'$"
+                        }
+                    },
+                    {
+                        "name": "Mtart",
+                        "in": "query",
+                        "description": "Value needs to be enclosed in single quotes",
+                        "schema": {
+                            "type": "string",
+                            "nullable": true,
+                            "pattern": "^'[^']*(''[^']*)*'$"
+                        }
+                    },
+                    {
+                        "name": "Lgort",
+                        "in": "query",
+                        "description": "Value needs to be enclosed in single quotes",
+                        "schema": {
+                            "type": "string",
+                            "nullable": true,
+                            "pattern": "^'[^']*(''[^']*)*'$"
+                        }
+                    },
+                    {
+                        "name": "Datbi",
+                        "in": "query",
+                        "description": "Value needs to be enclosed in single quotes",
+                        "schema": {
+                            "type": "string",
+                            "nullable": true,
+                            "pattern": "^'[^']*(''[^']*)*'$"
+                        }
+                    },
+                    {
+                        "name": "Ztag1",
+                        "in": "query",
+                        "description": "Value needs to be enclosed in single quotes",
+                        "schema": {
+                            "type": "string",
+                            "nullable": true,
+                            "pattern": "^'[^']*(''[^']*)*'$"
+                        }
+                    },
+                    {
+                        "name": "Pltyp",
+                        "in": "query",
+                        "description": "Value needs to be enclosed in single quotes",
+                        "schema": {
+                            "type": "string",
+                            "nullable": true,
+                            "pattern": "^'[^']*(''[^']*)*'$"
+                        }
+                    },
+                    {
+                        "name": "Mater",
+                        "in": "query",
+                        "description": "Value needs to be enclosed in single quotes",
+                        "schema": {
+                            "type": "string",
+                            "nullable": true,
+                            "pattern": "^'[^']*(''[^']*)*'$"
+                        }
+                    },
+                    {
+                        "name": "Matnr",
+                        "in": "query",
+                        "description": "Value needs to be enclosed in single quotes",
+                        "schema": {
+                            "type": "string",
+                            "nullable": true,
+                            "pattern": "^'[^']*(''[^']*)*'$"
+                        }
+                    },
+                    {
+                        "name": "Matest",
+                        "in": "query",
+                        "description": "Value needs to be enclosed in single quotes",
+                        "schema": {
+                            "type": "string",
+                            "nullable": true,
+                            "pattern": "^'[^']*(''[^']*)*'$"
+                        }
+                    },
+                    {
+                        "name": "Kunnr",
+                        "in": "query",
+                        "description": "Value needs to be enclosed in single quotes",
+                        "schema": {
+                            "type": "string",
+                            "nullable": true,
+                            "pattern": "^'[^']*(''[^']*)*'$"
+                        }
+                    },
+                    {
+                        "name": "Shipt",
+                        "in": "query",
+                        "description": "Value needs to be enclosed in single quotes",
+                        "schema": {
+                            "type": "string",
+                            "nullable": true,
+                            "pattern": "^'[^']*(''[^']*)*'$"
+                        }
+                    },
+                    {
+                        "name": "Erdatk",
+                        "in": "query",
+                        "description": "Value needs to be enclosed in single quotes",
+                        "schema": {
+                            "type": "string",
+                            "nullable": true,
+                            "pattern": "^'[^']*(''[^']*)*'$"
+                        }
+                    },
+                    {
+                        "name": "Branch",
+                        "in": "query",
+                        "description": "Value needs to be enclosed in single quotes",
+                        "schema": {
+                            "type": "string",
+                            "nullable": true,
+                            "pattern": "^'[^']*(''[^']*)*'$"
+                        }
+                    },
+                    {
+                        "name": "Credat",
+                        "in": "query",
+                        "description": "Value needs to be enclosed in single quotes",
+                        "schema": {
+                            "type": "string",
+                            "nullable": true,
+                            "pattern": "^'[^']*(''[^']*)*'$"
+                        }
+                    },
+                    {
+                        "name": "Shipf",
+                        "in": "query",
+                        "description": "Value needs to be enclosed in single quotes",
+                        "schema": {
+                            "type": "string",
+                            "nullable": true,
+                            "pattern": "^'[^']*(''[^']*)*'$"
+                        }
+                    },
+                    {
+                        "name": "Vbeln",
+                        "in": "query",
+                        "description": "Value needs to be enclosed in single quotes",
+                        "schema": {
+                            "type": "string",
+                            "nullable": true,
+                            "pattern": "^'[^']*(''[^']*)*'$"
+                        }
+                    },
+                    {
+                        "name": "Erdat",
+                        "in": "query",
+                        "description": "Value needs to be enclosed in single quotes",
+                        "schema": {
+                            "type": "string",
+                            "nullable": true,
+                            "pattern": "^'[^']*(''[^']*)*'$"
+                        }
+                    },
+                    {
+                        "name": "Gruop",
+                        "in": "query",
+                        "description": "Value needs to be enclosed in single quotes",
+                        "schema": {
+                            "type": "string",
+                            "nullable": true,
+                            "pattern": "^'[^']*(''[^']*)*'$"
+                        }
+                    },
+                    {
+                        "name": "$format",
+                        "in": "query",
+                        "description": "The format of the response. Supported values: json, xml",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "title": "Wrapper",
+                                    "type": "object",
+                                    "properties": {
+                                        "d": {
+                                            "title": "Collection of B2BResult",
+                                            "type": "object",
+                                            "properties": {
+                                                "__count": {
+                                                    "$ref": "#/components/schemas/count"
+                                                },
+                                                "results": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "$ref": "#/components/schemas/ZSD_B2B_SRV.B2BResult"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "4XX": {
+                        "$ref": "#/components/responses/error"
+                    }
+                }
+            }
+        },
+        "/ExecutarProcessador": {
+            "get": {
+                "summary": "Invoke function ExecutarProcessador",
+                "tags": [
+                    "B2BMessageSet"
+                ],
+                "parameters": [
+                    {
+                        "name": "Shipt",
+                        "in": "query",
+                        "description": "Value needs to be enclosed in single quotes",
+                        "schema": {
+                            "type": "string",
+                            "nullable": true,
+                            "pattern": "^'[^']*(''[^']*)*'$"
+                        }
+                    },
+                    {
+                        "name": "Shipf",
+                        "in": "query",
+                        "description": "Value needs to be enclosed in single quotes",
+                        "schema": {
+                            "type": "string",
+                            "nullable": true,
+                            "pattern": "^'[^']*(''[^']*)*'$"
+                        }
+                    },
+                    {
+                        "name": "Gruop",
+                        "in": "query",
+                        "description": "Value needs to be enclosed in single quotes",
+                        "schema": {
+                            "type": "string",
+                            "nullable": true,
+                            "pattern": "^'[^']*(''[^']*)*'$"
+                        }
+                    },
+                    {
+                        "name": "Erdat",
+                        "in": "query",
+                        "description": "Value needs to be enclosed in single quotes",
+                        "schema": {
+                            "type": "string",
+                            "nullable": true,
+                            "pattern": "^'[^']*(''[^']*)*'$"
+                        }
+                    },
+                    {
+                        "name": "Vbeln",
+                        "in": "query",
+                        "description": "Value needs to be enclosed in single quotes",
+                        "schema": {
+                            "type": "string",
+                            "nullable": true,
+                            "pattern": "^'[^']*(''[^']*)*'$"
+                        }
+                    },
+                    {
+                        "name": "Credat",
+                        "in": "query",
+                        "description": "Value needs to be enclosed in single quotes",
+                        "schema": {
+                            "type": "string",
+                            "nullable": true,
+                            "pattern": "^'[^']*(''[^']*)*'$"
+                        }
+                    },
+                    {
+                        "name": "Branch",
+                        "in": "query",
+                        "description": "Value needs to be enclosed in single quotes",
+                        "schema": {
+                            "type": "string",
+                            "nullable": true,
+                            "pattern": "^'[^']*(''[^']*)*'$"
+                        }
+                    },
+                    {
+                        "name": "Erdatk",
+                        "in": "query",
+                        "description": "Value needs to be enclosed in single quotes",
+                        "schema": {
+                            "type": "string",
+                            "nullable": true,
+                            "pattern": "^'[^']*(''[^']*)*'$"
+                        }
+                    },
+                    {
+                        "name": "Kunnr",
+                        "in": "query",
+                        "description": "Value needs to be enclosed in single quotes",
+                        "schema": {
+                            "type": "string",
+                            "nullable": true,
+                            "pattern": "^'[^']*(''[^']*)*'$"
+                        }
+                    },
+                    {
+                        "name": "Matest",
+                        "in": "query",
+                        "description": "Value needs to be enclosed in single quotes",
+                        "schema": {
+                            "type": "string",
+                            "nullable": true,
+                            "pattern": "^'[^']*(''[^']*)*'$"
+                        }
+                    },
+                    {
+                        "name": "Matnr",
+                        "in": "query",
+                        "description": "Value needs to be enclosed in single quotes",
+                        "schema": {
+                            "type": "string",
+                            "nullable": true,
+                            "pattern": "^'[^']*(''[^']*)*'$"
+                        }
+                    },
+                    {
+                        "name": "Mater",
+                        "in": "query",
+                        "description": "Value needs to be enclosed in single quotes",
+                        "schema": {
+                            "type": "string",
+                            "nullable": true,
+                            "pattern": "^'[^']*(''[^']*)*'$"
+                        }
+                    },
+                    {
+                        "name": "Pltyp",
+                        "in": "query",
+                        "description": "Value needs to be enclosed in single quotes",
+                        "schema": {
+                            "type": "string",
+                            "nullable": true,
+                            "pattern": "^'[^']*(''[^']*)*'$"
+                        }
+                    },
+                    {
+                        "name": "Ztag1",
+                        "in": "query",
+                        "description": "Value needs to be enclosed in single quotes",
+                        "schema": {
+                            "type": "string",
+                            "nullable": true,
+                            "pattern": "^'[^']*(''[^']*)*'$"
+                        }
+                    },
+                    {
+                        "name": "Datbi",
+                        "in": "query",
+                        "description": "Value needs to be enclosed in single quotes",
+                        "schema": {
+                            "type": "string",
+                            "nullable": true,
+                            "pattern": "^'[^']*(''[^']*)*'$"
+                        }
+                    },
+                    {
+                        "name": "Lgort",
+                        "in": "query",
+                        "description": "Value needs to be enclosed in single quotes",
+                        "schema": {
+                            "type": "string",
+                            "nullable": true,
+                            "pattern": "^'[^']*(''[^']*)*'$"
+                        }
+                    },
+                    {
+                        "name": "Mtart",
+                        "in": "query",
+                        "description": "Value needs to be enclosed in single quotes",
+                        "schema": {
+                            "type": "string",
+                            "nullable": true,
+                            "pattern": "^'[^']*(''[^']*)*'$"
+                        }
+                    },
+                    {
+                        "name": "Werks",
+                        "in": "query",
+                        "description": "Value needs to be enclosed in single quotes",
+                        "schema": {
+                            "type": "string",
+                            "nullable": true,
+                            "pattern": "^'[^']*(''[^']*)*'$"
+                        }
+                    },
+                    {
+                        "name": "Vtweg",
+                        "in": "query",
+                        "description": "Value needs to be enclosed in single quotes",
+                        "schema": {
+                            "type": "string",
+                            "nullable": true,
+                            "pattern": "^'[^']*(''[^']*)*'$"
+                        }
+                    },
+                    {
+                        "name": "Rejeitados",
+                        "in": "query",
+                        "description": "Código",
+                        "schema": {
+                            "type": "boolean",
+                            "nullable": true
+                        }
+                    },
+                    {
+                        "name": "Positivados",
+                        "in": "query",
+                        "description": "Código",
+                        "schema": {
+                            "type": "boolean",
+                            "nullable": true
+                        }
+                    },
+                    {
+                        "name": "ST",
+                        "in": "query",
+                        "description": "Código",
+                        "schema": {
+                            "type": "boolean",
+                            "nullable": true
+                        }
+                    },
+                    {
+                        "name": "Ipi",
+                        "in": "query",
+                        "description": "Código",
+                        "schema": {
+                            "type": "boolean",
+                            "nullable": true
+                        }
+                    },
+                    {
+                        "name": "Icms",
+                        "in": "query",
+                        "description": "Código",
+                        "schema": {
+                            "type": "boolean",
+                            "nullable": true
+                        }
+                    },
+                    {
+                        "name": "Datimp",
+                        "in": "query",
+                        "description": "Value needs to be enclosed in single quotes",
+                        "schema": {
+                            "type": "string",
+                            "nullable": true,
+                            "pattern": "^'[^']*(''[^']*)*'$"
+                        }
+                    },
+                    {
+                        "name": "Datum",
+                        "in": "query",
+                        "description": "Value needs to be enclosed in single quotes",
+                        "schema": {
+                            "type": "string",
+                            "nullable": true,
+                            "pattern": "^'[^']*(''[^']*)*'$"
+                        }
+                    },
+                    {
+                        "name": "Vkorg",
+                        "in": "query",
+                        "description": "Value needs to be enclosed in single quotes",
+                        "schema": {
+                            "type": "string",
+                            "nullable": true,
+                            "pattern": "^'[^']*(''[^']*)*'$"
+                        }
+                    },
+                    {
+                        "name": "CargaInicial",
+                        "in": "query",
+                        "description": "Código",
+                        "schema": {
+                            "type": "boolean",
+                            "nullable": true
+                        }
+                    },
+                    {
+                        "name": "Tipo",
+                        "in": "query",
+                        "required": true,
+                        "description": "Value needs to be enclosed in single quotes",
+                        "schema": {
+                            "type": "string",
+                            "pattern": "^'[^']*(''[^']*)*'$"
+                        }
+                    },
+                    {
+                        "name": "$format",
+                        "in": "query",
+                        "description": "The format of the response. Supported values: json, xml",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "title": "Wrapper",
+                                    "type": "object",
+                                    "properties": {
+                                        "d": {
+                                            "title": "Collection of B2BMessage",
+                                            "type": "object",
+                                            "properties": {
+                                                "__count": {
+                                                    "$ref": "#/components/schemas/count"
+                                                },
+                                                "results": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "$ref": "#/components/schemas/ZSD_B2B_SRV.B2BMessage"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "4XX": {
+                        "$ref": "#/components/responses/error"
+                    }
+                }
+            }
+        },
+        "/$batch": {
+            "post": {
+                "summary": "Send a group of requests",
+                "description": "Group multiple requests into a single request payload, see [Batch Requests](https://help.sap.com/doc/5890d27be418427993fafa6722cdc03b/Cloud/en-US/OdataV2.pdf#page=152).\n\n*Please note that \"Try it out\" is not supported for this request.*",
+                "tags": [
+                    "Batch Requests"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "description": "Batch request",
+                    "content": {
+                        "multipart/mixed;boundary=request-separator": {
+                            "schema": {
+                                "type": "string"
+                            },
+                            "example": "--request-separator\nContent-Type: application/http\nContent-Transfer-Encoding: binary\n\nGET B2BMessageSet HTTP/1.1\nAccept: application/json\n\n\n--request-separator--"
+                        }
+                    }
+                },
+                "responses": {
+                    "202": {
+                        "description": "Batch response",
+                        "content": {
+                            "multipart/mixed": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "example": "--response-separator\nContent-Type: application/http\n\nHTTP/1.1 200 OK\nContent-Type: application/json\n\n{...}\n--response-separator--"
+                            }
+                        }
+                    },
+                    "4XX": {
+                        "$ref": "#/components/responses/error"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "ZSD_B2B_SRV.B2BMessage": {
+                "type": "object",
+                "properties": {
+                    "SeqID": {
+                        "type": "string"
+                    },
+                    "Type": {
+                        "type": "string"
+                    },
+                    "Message": {
+                        "type": "string"
+                    }
+                },
+                "title": "B2BMessage"
+            },
+            "ZSD_B2B_SRV.B2BMessage-create": {
+                "type": "object",
+                "title": "B2BMessage (for create)"
+            },
+            "ZSD_B2B_SRV.B2BMessage-update": {
+                "type": "object",
+                "title": "B2BMessage (for update)"
+            },
+            "ZSD_B2B_SRV.B2BResult": {
+                "type": "object",
+                "properties": {
+                    "Processor": {
+                        "type": "string"
+                    },
+                    "Status": {
+                        "type": "string"
+                    },
+                    "QtdMessages": {
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                },
+                "title": "B2BResult"
+            },
+            "ZSD_B2B_SRV.B2BResult-create": {
+                "type": "object",
+                "title": "B2BResult (for create)"
+            },
+            "ZSD_B2B_SRV.B2BResult-update": {
+                "type": "object",
+                "title": "B2BResult (for update)"
+            },
+            "ZSD_B2B_SRV.ZshClientes": {
+                "type": "object",
+                "properties": {
+                    "Customer": {
+                        "type": "string",
+                        "maxLength": 10,
+                        "title": "Cliente"
+                    },
+                    "Customername": {
+                        "type": "string",
+                        "maxLength": 80,
+                        "title": "Nome do cliente"
+                    },
+                    "Cityname": {
+                        "type": "string",
+                        "maxLength": 35,
+                        "title": "Cidade"
+                    }
+                },
+                "title": "ZshClientes"
+            },
+            "ZSD_B2B_SRV.ZshClientes-create": {
+                "type": "object",
+                "title": "ZshClientes (for create)"
+            },
+            "ZSD_B2B_SRV.ZshClientes-update": {
+                "type": "object",
+                "title": "ZshClientes (for update)"
+            },
+            "ZSD_B2B_SRV.ZshProdutos": {
+                "type": "object",
+                "properties": {
+                    "Product": {
+                        "type": "string",
+                        "maxLength": 40,
+                        "title": "Material"
+                    },
+                    "Productname": {
+                        "type": "string",
+                        "maxLength": 40,
+                        "title": "Descrição"
+                    }
+                },
+                "title": "ZshProdutos"
+            },
+            "ZSD_B2B_SRV.ZshProdutos-create": {
+                "type": "object",
+                "title": "ZshProdutos (for create)"
+            },
+            "ZSD_B2B_SRV.ZshProdutos-update": {
+                "type": "object",
+                "title": "ZshProdutos (for update)"
+            },
+            "ZSD_B2B_SRV.ZshOrgVendas": {
+                "type": "object",
+                "properties": {
+                    "Salesorganization": {
+                        "type": "string",
+                        "maxLength": 4,
+                        "title": "Org.vendas"
+                    },
+                    "Salesorganizationname": {
+                        "type": "string",
+                        "maxLength": 20,
+                        "title": "Descrição de organização de vendas"
+                    }
+                },
+                "title": "ZshOrgVendas"
+            },
+            "ZSD_B2B_SRV.ZshOrgVendas-create": {
+                "type": "object",
+                "title": "ZshOrgVendas (for create)"
+            },
+            "ZSD_B2B_SRV.ZshOrgVendas-update": {
+                "type": "object",
+                "title": "ZshOrgVendas (for update)"
+            },
+            "ZSD_B2B_SRV.EnviarNF": {
+                "type": "object",
+                "properties": {
+                    "QuantidadeProcessada": {
+                        "type": "string"
+                    },
+                    "DataProcessamento": {
+                        "type": "string"
+                    },
+                    "Mensagem": {
+                        "type": "string",
+                        "maxLength": 220
+                    },
+                    "Status": {
+                        "type": "string"
+                    },
+                    "Branch": {
+                        "type": "string"
+                    },
+                    "CargaIncremental": {
+                        "type": "string"
+                    },
+                    "NfNumero": {
+                        "type": "string"
+                    },
+                    "DataFim": {
+                        "type": "string"
+                    },
+                    "DataInicio": {
+                        "type": "string"
+                    },
+                    "ProcessarNotasId": {
+                        "type": "string"
+                    },
+                    "CargaInicial": {
+                        "type": "string"
+                    }
+                },
+                "title": "EnviarNF"
+            },
+            "ZSD_B2B_SRV.EnviarNF-create": {
+                "type": "object",
+                "title": "EnviarNF (for create)"
+            },
+            "ZSD_B2B_SRV.EnviarNF-update": {
+                "type": "object",
+                "title": "EnviarNF (for update)"
+            },
+            "ZSD_B2B_SRV.YpmtlBranch": {
+                "type": "object",
+                "properties": {
+                    "Branch": {
+                        "type": "string",
+                        "maxLength": 4,
+                        "title": "Loc.negócios"
+                    },
+                    "Bukrs": {
+                        "type": "string",
+                        "maxLength": 4,
+                        "title": "Empresa"
+                    },
+                    "Name": {
+                        "type": "string",
+                        "maxLength": 30,
+                        "title": "Nome 1"
+                    }
+                },
+                "title": "YpmtlBranch"
+            },
+            "ZSD_B2B_SRV.YpmtlBranch-create": {
+                "type": "object",
+                "title": "YpmtlBranch (for create)"
+            },
+            "ZSD_B2B_SRV.YpmtlBranch-update": {
+                "type": "object",
+                "title": "YpmtlBranch (for update)"
+            },
+            "ZSD_B2B_SRV.ZshShipIcms": {
+                "type": "object",
+                "properties": {
+                    "Shipfrom": {
+                        "type": "string",
+                        "maxLength": 3,
+                        "title": "Emissor"
+                    },
+                    "Shipto": {
+                        "type": "string",
+                        "maxLength": 3,
+                        "title": "Receptor"
+                    },
+                    "Land1": {
+                        "type": "string",
+                        "maxLength": 3,
+                        "title": "País/região"
+                    },
+                    "Rate": {
+                        "type": "string",
+                        "format": "decimal",
+                        "x-sap-precision": 6,
+                        "x-sap-scale": 2,
+                        "multipleOf": 0.01,
+                        "minimum": -9999.99,
+                        "maximum": 9999.99,
+                        "example": "0",
+                        "title": "Taxa de imposto"
+                    },
+                    "Base": {
+                        "type": "string",
+                        "format": "decimal",
+                        "x-sap-precision": 6,
+                        "x-sap-scale": 2,
+                        "multipleOf": 0.01,
+                        "minimum": -9999.99,
+                        "maximum": 9999.99,
+                        "example": "0",
+                        "title": "Base do imposto"
+                    }
+                },
+                "title": "ZshShipIcms"
+            },
+            "ZSD_B2B_SRV.ZshShipIcms-create": {
+                "type": "object",
+                "title": "ZshShipIcms (for create)"
+            },
+            "ZSD_B2B_SRV.ZshShipIcms-update": {
+                "type": "object",
+                "title": "ZshShipIcms (for update)"
+            },
+            "ZSD_B2B_SRV.ZshPricelistyp": {
+                "type": "object",
+                "properties": {
+                    "Pricelisttype": {
+                        "type": "string",
+                        "maxLength": 2,
+                        "title": "Tp.lista preços"
+                    },
+                    "Pricelisttypename": {
+                        "type": "string",
+                        "maxLength": 20,
+                        "title": "Denominação"
+                    }
+                },
+                "title": "ZshPricelistyp"
+            },
+            "ZSD_B2B_SRV.ZshPricelistyp-create": {
+                "type": "object",
+                "title": "ZshPricelistyp (for create)"
+            },
+            "ZSD_B2B_SRV.ZshPricelistyp-update": {
+                "type": "object",
+                "title": "ZshPricelistyp (for update)"
+            },
+            "ZSD_B2B_SRV.ZshGroup": {
+                "type": "object",
+                "properties": {
+                    "Gruop": {
+                        "type": "string",
+                        "maxLength": 2,
+                        "title": "Grupo imposto"
+                    }
+                },
+                "title": "ZshGroup"
+            },
+            "ZSD_B2B_SRV.ZshGroup-create": {
+                "type": "object",
+                "title": "ZshGroup (for create)"
+            },
+            "ZSD_B2B_SRV.ZshGroup-update": {
+                "type": "object",
+                "title": "ZshGroup (for update)"
+            },
+            "count": {
+                "type": "string",
+                "description": "The number of entities in the collection. Available when using the [$inlinecount](https://help.sap.com/doc/5890d27be418427993fafa6722cdc03b/Cloud/en-US/OdataV2.pdf#page=67) query option."
+            },
+            "error": {
+                "type": "object",
+                "required": [
+                    "error"
+                ],
+                "properties": {
+                    "error": {
+                        "type": "object",
+                        "required": [
+                            "code",
+                            "message"
+                        ],
+                        "properties": {
+                            "code": {
+                                "type": "string"
+                            },
+                            "message": {
+                                "type": "object",
+                                "required": [
+                                    "lang",
+                                    "value"
+                                ],
+                                "properties": {
+                                    "lang": {
+                                        "type": "string"
+                                    },
+                                    "value": {
+                                        "type": "string"
+                                    }
+                                }
+                            },
+                            "innererror": {
+                                "type": "object",
+                                "description": "The structure of this object is service-specific"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "parameters": {
+            "top": {
+                "name": "$top",
+                "in": "query",
+                "description": "Show only the first n items, see [Paging - Top](https://help.sap.com/doc/5890d27be418427993fafa6722cdc03b/Cloud/en-US/OdataV2.pdf#page=66)",
+                "schema": {
+                    "type": "integer",
+                    "minimum": 0
+                },
+                "example": 50
+            },
+            "skip": {
+                "name": "$skip",
+                "in": "query",
+                "description": "Skip the first n items, see [Paging - Skip](https://help.sap.com/doc/5890d27be418427993fafa6722cdc03b/Cloud/en-US/OdataV2.pdf#page=65)",
+                "schema": {
+                    "type": "integer",
+                    "minimum": 0
+                }
+            },
+            "count": {
+                "name": "$inlinecount",
+                "in": "query",
+                "description": "Include count of items, see [Inlinecount](https://help.sap.com/doc/5890d27be418427993fafa6722cdc03b/Cloud/en-US/OdataV2.pdf#page=67)",
+                "schema": {
+                    "type": "string",
+                    "enum": [
+                        "allpages",
+                        "none"
+                    ]
+                }
+            }
+        },
+        "responses": {
+            "error": {
+                "description": "Error",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/error"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
