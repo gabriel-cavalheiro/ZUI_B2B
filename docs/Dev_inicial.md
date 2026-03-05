@@ -1,10 +1,19 @@
-|               | Detalhe                                                                                  |
+|               | Informações                                                                              |
 |---------------|------------------------------------------------------------------------------------------|
 | **Projeto**   | ZUI_SD_B2B — APP FIORI UI5 B2B · ZSD277                                                  |
 | **Dev**       | Gabriel Cavalheiro                                                                       |
 | **Empresa**   | Prestativ                                                                                |
 | **Data**      | 05.03.2026                                                                               |
 | **Descrição** | Documentação técnica do app Fiori UI5 de Envio de Cargas B2B. Cobre arquitetura, fluxos, processadores, parâmetros e integração OData. |
+
+**Ordens de Modificação — SAP ABAP**
+
+| Ordem        | Tipo          | Destino | Responsável | Descrição                                      |
+|--------------|---------------|---------|-------------|------------------------------------------------|
+| DE1K9A05L1   | Workbench     | QE1     | GABRIELRO   | 05012026_SD_B2B: APP FIORI UI5 B2B - ZSD277    |
+| DE1K9A040K   | Workbench     | QE1     | GABRIELRO   | 06112025_SD_B2B: [PRESTATIV]- GR - APP FIORI ZVOCALNF B2B |
+| DE1K9A052Z   | Customizing   | QE1     | GABRIELRO   | 11122025_SD_B2B: [PRESTATIV]- GR - APP FIORI ZVOCALNF B2B |
+| DE1K9A05YJ   | Customizing   | QE1     | GABRIELRO   | 16012026_SD_B2B: APP FIORI UI5 B2B - ZSD2      |
 
 **Requests OData — `ZSD_B2B_SRV`**
 
