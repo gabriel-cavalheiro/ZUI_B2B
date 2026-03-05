@@ -26,7 +26,12 @@ sap.ui.define([
                 oModel.read("/ZshOrgVendasSet", {
                     success: function (oData) {
                         var aItems = (oData.results || []).map(function (o) {
-                            return Object.assign(that._toLowerCaseObject(o), { vkorg: o.Vkorg, vtext: o.Vtext });
+                            var oLower = that._toLowerCaseObject(o);
+                            var sVkorg = o.Vkorg || o.Salesorganization || oLower.salesorganization || "";
+                            var sVtext = o.Vtext || o.Salesorganizationname || oLower.salesorganizationname || "";
+                            return Object.assign(oLower, { vkorg: sVkorg, vtext: sVtext });
+                        }).filter(function (oItem) {
+                            return !!oItem.vkorg;
                         });
                         resolve(aItems);
                     },
@@ -111,6 +116,7 @@ sap.ui.define([
             var that = this;
             var sSearch = ((oCriteria && oCriteria.search) || "").trim();
             var iTop = (oCriteria && oCriteria.top) || 200;
+            var iSkip = (oCriteria && oCriteria.skip) || 0;
 
             if (!sSearch) {
                 return Promise.resolve([]);
@@ -128,7 +134,8 @@ sap.ui.define([
                 oModel.read("/ZshProdutosSet", {
                     filters: aFilters,
                     urlParameters: {
-                        "$top": String(iTop)
+                        "$top": String(iTop),
+                        "$skip": String(iSkip)
                     },
                     success: function (oData) {
                         var aItems = (oData.results || []).map(function (o) {

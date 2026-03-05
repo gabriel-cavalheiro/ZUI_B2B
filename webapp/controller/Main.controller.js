@@ -21,7 +21,14 @@ sap.ui.define([
             this._oVHBranchDialog = null;
             this._sProdutoTargetField = null;
             this._iMinProdutoSearchChars = 3;
-            this._iMaxProdutosVH = 200;
+            this._iMaxProdutosVH = 100;
+            this._oProdutosVHState = {
+                term: "",
+                skip: 0,
+                hasMore: false,
+                loading: false,
+                requestToken: 0
+            };
             this._mVHFilterConfig = {
                 clientes: {
                     collectionPath: "/clientes",
@@ -342,6 +349,11 @@ sap.ui.define([
             var oView = this.getView();
             var that = this;
             oView.getModel("view").setProperty("/produtos", []);
+            this._oProdutosVHState.term = "";
+            this._oProdutosVHState.skip = 0;
+            this._oProdutosVHState.hasMore = false;
+            this._oProdutosVHState.loading = false;
+            this._oProdutosVHState.requestToken = 0;
 
             if (!this._oVHProdutosDialog) {
                 Fragment.load({
@@ -368,18 +380,39 @@ sap.ui.define([
             var sTerm = (sSearchValue || "").trim();
             var oViewModel = this.getView().getModel("view");
             var oDialog = this._oVHProdutosDialog;
+            var oState = this._oProdutosVHState;
 
             if (sTerm.length < this._iMinProdutoSearchChars) {
                 oViewModel.setProperty("/produtos", []);
                 if (oDialog) {
                     oDialog.setNoDataText("Digite ao menos " + this._iMinProdutoSearchChars + " caracteres e pesquise.");
                 }
+                oState.term = "";
+                oState.skip = 0;
+                oState.hasMore = false;
                 return;
             }
+
+            if (oState.loading) {
+                return;
+            }
+
+            var bLoadNextPage = (sTerm === oState.term && oState.hasMore);
+
+            if (!bLoadNextPage) {
+                oState.term = sTerm;
+                oState.skip = 0;
+                oState.hasMore = false;
+                oViewModel.setProperty("/produtos", []);
+            }
+
+            var iRequestToken = ++oState.requestToken;
+            oState.loading = true;
 
             var oCriteria = {
                 search: sTerm,
                 top: this._iMaxProdutosVH,
+                skip: oState.skip,
                 vkorg: oViewModel.getProperty("/vkorg"),
                 vtweg: oViewModel.getProperty("/params/vtweg"),
                 werks: oViewModel.getProperty("/params/werks"),
@@ -392,18 +425,42 @@ sap.ui.define([
 
             ODataService.searchProdutos(this.getOwnerComponent().getModel(), oCriteria)
                 .then(function (aItems) {
-                    oViewModel.setProperty("/produtos", aItems);
-                    if (oDialog && aItems.length >= this._iMaxProdutosVH) {
-                        oDialog.setNoDataText("Refine a busca para reduzir resultados.");
+                    if (iRequestToken !== oState.requestToken) {
+                        return;
+                    }
+
+                    var aCurrent = bLoadNextPage ? (oViewModel.getProperty("/produtos") || []) : [];
+                    var aCombined = bLoadNextPage ? aCurrent.concat(aItems) : aItems;
+                    oViewModel.setProperty("/produtos", aCombined);
+
+                    oState.skip += aItems.length;
+                    oState.hasMore = aItems.length === this._iMaxProdutosVH;
+
+                    if (oDialog) {
+                        if (!aCombined.length) {
+                            oDialog.setNoDataText("Nenhum material encontrado para o termo informado.");
+                        } else if (oState.hasMore) {
+                            oDialog.setNoDataText("Há mais resultados. Pesquise novamente o mesmo termo para carregar mais.");
+                        } else {
+                            oDialog.setNoDataText("Fim dos resultados para o termo informado.");
+                        }
                     }
                 }.bind(this))
                 .catch(function (oError) {
+                    if (iRequestToken !== oState.requestToken) {
+                        return;
+                    }
                     oViewModel.setProperty("/produtos", []);
+                    oState.skip = 0;
+                    oState.hasMore = false;
                     MessageBox.error(ODataService.extractErrorMessage(oError));
                 })
                 .then(function () {
-                    if (oDialog) {
-                        oDialog.setBusy(false);
+                    if (iRequestToken === oState.requestToken) {
+                        oState.loading = false;
+                        if (oDialog) {
+                            oDialog.setBusy(false);
+                        }
                     }
                 });
         },
