@@ -424,17 +424,19 @@ sap.ui.define([
             }
 
             ODataService.searchProdutos(this.getOwnerComponent().getModel(), oCriteria)
-                .then(function (aItems) {
+                .then(function (oResult) {
                     if (iRequestToken !== oState.requestToken) {
                         return;
                     }
 
+                    var aItems = Array.isArray(oResult) ? oResult : (oResult.items || []);
+                    var iReturned = Array.isArray(oResult) ? aItems.length : (oResult.pageSize || 0);
                     var aCurrent = bLoadNextPage ? (oViewModel.getProperty("/produtos") || []) : [];
                     var aCombined = bLoadNextPage ? aCurrent.concat(aItems) : aItems;
                     oViewModel.setProperty("/produtos", aCombined);
 
-                    oState.skip += aItems.length;
-                    oState.hasMore = aItems.length === this._iMaxProdutosVH;
+                    oState.skip += iReturned;
+                    oState.hasMore = iReturned === this._iMaxProdutosVH;
 
                     if (oDialog) {
                         if (!aCombined.length) {

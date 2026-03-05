@@ -1,7 +1,4 @@
-sap.ui.define([
-    "sap/ui/model/Filter",
-    "sap/ui/model/FilterOperator"
-], function (Filter, FilterOperator) {
+sap.ui.define([], function () {
     "use strict";
 
     return {
@@ -114,37 +111,50 @@ sap.ui.define([
          */
         searchProdutos: function (oModel, oCriteria) {
             var that = this;
-            var sSearch = ((oCriteria && oCriteria.search) || "").trim();
+            var sSearch = (((oCriteria && oCriteria.search) || "").trim()).toLowerCase();
             var iTop = (oCriteria && oCriteria.top) || 200;
             var iSkip = (oCriteria && oCriteria.skip) || 0;
-
-            if (!sSearch) {
-                return Promise.resolve([]);
-            }
+            var sVkorg = ((oCriteria && oCriteria.vkorg) || "").trim();
+            var sVtweg = ((oCriteria && oCriteria.vtweg) || "").trim();
+            var sWerks = ((oCriteria && oCriteria.werks) || "").trim();
+            var sMtart = ((oCriteria && oCriteria.mtart) || "").trim();
 
             return new Promise(function (resolve, reject) {
-                var aFilters = [new Filter({
-                    filters: [
-                        new Filter("Product", FilterOperator.Contains, sSearch),
-                        new Filter("Productname", FilterOperator.Contains, sSearch)
-                    ],
-                    and: false
-                })];
-
                 oModel.read("/ZshProdutosSet", {
-                    filters: aFilters,
                     urlParameters: {
                         "$top": String(iTop),
                         "$skip": String(iSkip)
                     },
                     success: function (oData) {
-                        var aItems = (oData.results || []).map(function (o) {
+                        var aRawItems = (oData.results || []).map(function (o) {
                             return Object.assign(that._toLowerCaseObject(o), {
                                 product: o.Product,
                                 productname: o.Productname
                             });
                         });
-                        resolve(aItems);
+
+                        var aItems = aRawItems.filter(function (oItem) {
+                            var sProduct = String(oItem.product || "").toLowerCase();
+                            var sProductName = String(oItem.productname || "").toLowerCase();
+                            var bTermOk = !sSearch || sProduct.indexOf(sSearch) > -1 || sProductName.indexOf(sSearch) > -1;
+
+                            var sItemVkorg = String(oItem.vkorg || oItem.salesorg || "").trim();
+                            var sItemVtweg = String(oItem.vtweg || "").trim();
+                            var sItemWerks = String(oItem.werks || "").trim();
+                            var sItemMtart = String(oItem.mtart || "").trim();
+
+                            var bVkorgOk = !sVkorg || !sItemVkorg || sItemVkorg === sVkorg;
+                            var bVtwegOk = !sVtweg || !sItemVtweg || sItemVtweg === sVtweg;
+                            var bWerksOk = !sWerks || !sItemWerks || sItemWerks === sWerks;
+                            var bMtartOk = !sMtart || !sItemMtart || sItemMtart === sMtart;
+
+                            return bTermOk && bVkorgOk && bVtwegOk && bWerksOk && bMtartOk;
+                        });
+
+                        resolve({
+                            items: aItems,
+                            pageSize: aRawItems.length
+                        });
                     },
                     error: function (oError) {
                         reject(oError);
