@@ -38,7 +38,8 @@ npm run deploy
 
 ## Documentação
 
-A documentação técnica detalhada está em [docs/FUNCIONAMENTO.md](docs/FUNCIONAMENTO.md).
+- A documentação técnica detalhada está em [docs/Dev_inicial.md](docs/Dev_inicial.md).
+- Swagger do Odata está em [docs/swagger.yaml](docs/swagger.yaml).
 
 ## Estrutura
 
