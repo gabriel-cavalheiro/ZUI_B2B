@@ -74,11 +74,11 @@
                         <Panel visible="{view>/processadores/LISTA_PRECO}" headerText="{i18n>lblListaPreco}" class="sapUiTinyMargin paramCard">
                             <VBox class="sapUiSmallMargin">
                                 <Label text="{i18n>lblDatum}" />
-                                <DateRangePicker id="idDatumRangeDateRangePicker" value="{view>/params/datumRange}" displayFormat="dd/MM/yyyy" valueFormat="yyyyMMdd" width="100%" class="sapUiTinyMarginBottom" />
+                                <DateRangeSelection id="idDatumRangeDateRangePicker"  value="{view>/params/datumRange}" displayFormat="dd/MM/yyyy" valueFormat="yyyyMMdd" width="50%" class="sapUiTinyMarginBottom" />
                                 <Label text="{i18n>lblPltyp}" />
-                                <Input id="inpPltyp" value="{view>/params/pltyp}" placeholder="Ex: 01,02" width="100%" class="sapUiTinyMarginBottom" />
+                                <Input id="inpPltyp" value="{view>/params/pltyp}" placeholder="Ex: 01,02" width="50%" class="sapUiTinyMarginBottom" />
                                 <Label text="{i18n>lblMater}" />
-                                <Input id="inpMater" value="{view>/params/mater}" placeholder="Material" width="100%"
+                                <Input id="inpMater" value="{view>/params/mater}" placeholder="Material" width="50%"
                                     showValueHelp="true" valueHelpRequest=".onMaterInputValueHelpRequest" />
                             </VBox>
                         </Panel>
@@ -87,7 +87,7 @@
                         <Panel visible="{view>/processadores/IMPOSTOS}" headerText="{i18n>lblImpostos}" class="sapUiTinyMargin paramCard">
                             <VBox class="sapUiSmallMargin">
                                 <Label text="{i18n>lblDatimp}" />
-                                <DateRangePicker id="idDatimpRangeDateRangePicker" value="{view>/params/datimpRange}" displayFormat="dd/MM/yyyy" valueFormat="yyyyMMdd" width="100%" class="sapUiTinyMarginBottom" />
+                                <DateRangeSelection id="idDatimpRangeDateRangePicker" value="{view>/params/datimpRange}" displayFormat="dd/MM/yyyy" valueFormat="yyyyMMdd" width="50%" class="sapUiTinyMarginBottom" />
                                 <Label text="{i18n>lblTipoImposto}" />
                                 <HBox class="sapUiTinyMarginBottom">
                                     <CheckBox text="ICMS" selected="{view>/params/icms}" />
@@ -95,11 +95,11 @@
                                     <CheckBox text="ST" selected="{view>/params/st}" class="sapUiSmallMarginBegin" />
                                 </HBox>
                                 <Label text="{i18n>lblGruop}" />
-                                <Input id="inpGruop" value="{view>/params/gruop}" placeholder="Grupo (CSV)" width="100%" class="sapUiTinyMarginBottom" />
+                                <Input id="inpGruop" value="{view>/params/gruop}" placeholder="Grupo (CSV)" width="50%" class="sapUiTinyMarginBottom" />
                                 <Label text="{i18n>lblShipf}" />
-                                <Input id="inpShipf" value="{view>/params/shipf}" placeholder="Ship From (CSV)" width="100%" class="sapUiTinyMarginBottom" />
+                                <Input id="inpShipf" value="{view>/params/shipf}" placeholder="Ship From (CSV)" width="50%" class="sapUiTinyMarginBottom" />
                                 <Label text="{i18n>lblShipt}" />
-                                <Input id="inpShipt" value="{view>/params/shipt}" placeholder="Ship To (CSV)" width="100%" />
+                                <Input id="inpShipt" value="{view>/params/shipt}" placeholder="Ship To (CSV)" width="50%" />
                             </VBox>
                         </Panel>
 
@@ -112,10 +112,10 @@
                                     <CheckBox text="Rejeitados" selected="{view>/params/rejeitados}" class="sapUiSmallMarginBegin" />
                                 </HBox>
                                 <Label text="{i18n>lblKunnr}" />
-                                <Input id="inpKunnr" value="{view>/params/kunnr}" placeholder="Cliente" width="100%"
+                                <Input id="inpKunnr" value="{view>/params/kunnr}" placeholder="Cliente" width="50%"
                                     showValueHelp="true" valueHelpRequest=".onKunnrInputValueHelpRequest" class="sapUiTinyMarginBottom" />
                                 <Label text="{i18n>lblErdatk}" />
-                                <DateRangePicker id="idErdatkRangeDateRangePicker" value="{view>/params/erdatkRange}" displayFormat="dd/MM/yyyy" valueFormat="yyyyMMdd" width="100%" />
+                                <DateRangeSelection id="idErdatkRangeDateRangePicker" value="{view>/params/erdatkRange}" displayFormat="dd/MM/yyyy" valueFormat="yyyyMMdd" width="50%" />
                             </VBox>
                         </Panel>
 
@@ -123,26 +123,26 @@
                         <Panel visible="{view>/processadores/PRODUTOS}" headerText="{i18n>lblProdutos}" class="sapUiTinyMargin paramCard">
                             <VBox class="sapUiSmallMargin">
                                 <Label text="{i18n>lblMatnr}" />
-                                <Input id="inpMatnr" value="{view>/params/matnr}" placeholder="Material" width="100%"
+                                <Input id="inpMatnr" value="{view>/params/matnr}" placeholder="Material" width="70%"
                                     showValueHelp="true" valueHelpRequest=".onMatnrInputValueHelpRequest" class="sapUiTinyMarginBottom" />
                                 <HBox class="sapUiTinyMarginBottom">
                                     <VBox class="sapUiTinyMarginEnd" width="50%">
                                         <Label text="{i18n>lblVtweg}" />
-                                        <Input id="inpVtweg" value="{view>/params/vtweg}" placeholder="Ex: 10" width="100%" />
+                                        <Input id="inpVtweg" value="{view>/params/vtweg}" placeholder="Ex: 10" width="50%" />
                                     </VBox>
                                     <VBox width="50%">
                                         <Label text="{i18n>lblWerks}" />
-                                        <Input id="inpWerks" value="{view>/params/werks}" placeholder="Ex: 1500" width="100%" />
+                                        <Input id="inpWerks" value="{view>/params/werks}" placeholder="Ex: 1500" width="50%" />
                                     </VBox>
                                 </HBox>
                                 <HBox>
                                     <VBox class="sapUiTinyMarginEnd" width="50%">
                                         <Label text="{i18n>lblMtart}" />
-                                        <Input id="inpMtart" value="{view>/params/mtart}" placeholder="Ex: FERT" width="100%" />
+                                        <Input id="inpMtart" value="{view>/params/mtart}" placeholder="Ex: FERT" width="50%" />
                                     </VBox>
                                     <VBox width="50%">
                                         <Label text="{i18n>lblLgort}" />
-                                        <Input id="inpLgort" value="{view>/params/lgort}" placeholder="Ex: 0001" width="100%" />
+                                        <Input id="inpLgort" value="{view>/params/lgort}" placeholder="Ex: 0001" width="50%" />
                                     </VBox>
                                 </HBox>
                             </VBox>
@@ -152,7 +152,7 @@
                         <Panel visible="{view>/processadores/ESTOQUE}" headerText="{i18n>lblEstoque}" class="sapUiTinyMargin paramCard">
                             <VBox class="sapUiSmallMargin">
                                 <Label text="{i18n>lblMatest}" />
-                                <Input id="inpMatest" value="{view>/params/matest}" placeholder="Material Estoque" width="100%"
+                                <Input id="inpMatest" value="{view>/params/matest}" placeholder="Material Estoque" width="50%"
                                     showValueHelp="true" valueHelpRequest=".onMatestInputValueHelpRequest" />
                             </VBox>
                         </Panel>
@@ -161,10 +161,10 @@
                         <Panel visible="{view>/processadores/NF}" headerText="{i18n>lblNF}" class="sapUiTinyMargin paramCard">
                             <VBox class="sapUiSmallMargin">
                                 <Label text="{i18n>lblBranch}" />
-                                <Input id="inpBranch" value="{view>/params/branch}" placeholder="Branch" width="100%"
+                                <Input id="inpBranch" value="{view>/params/branch}" placeholder="Branch" width="50%"
                                     showValueHelp="true" valueHelpRequest=".onBranchInputValueHelpRequest" class="sapUiTinyMarginBottom" />
                                 <Label text="{i18n>lblCredat}" />
-                                <DateRangePicker id="idCRedatRangeDateRangePicker" value="{view>/params/cRedatRange}" displayFormat="dd/MM/yyyy" valueFormat="yyyyMMdd" width="100%" />
+                                <DateRangeSelection id="idCRedatRangeDateRangePicker" value="{view>/params/cRedatRange}" displayFormat="dd/MM/yyyy" valueFormat="yyyyMMdd" width="50%" />
                             </VBox>
                         </Panel>
 
@@ -172,9 +172,9 @@
                         <Panel visible="{view>/processadores/ORDEM_VENDA}" headerText="{i18n>lblOrdemVenda}" class="sapUiTinyMargin paramCard">
                             <VBox class="sapUiSmallMargin">
                                 <Label text="{i18n>lblErdat}" />
-                                <DateRangePicker id="idErdatRangeDateRangePicker" value="{view>/params/erdatRange}" displayFormat="dd/MM/yyyy" valueFormat="yyyyMMdd" width="100%" class="sapUiTinyMarginBottom" />
+                                <DateRangeSelection id="idErdatRangeDateRangePicker" value="{view>/params/erdatRange}" displayFormat="dd/MM/yyyy" valueFormat="yyyyMMdd" width="50%" class="sapUiTinyMarginBottom" />
                                 <Label text="{i18n>lblVbeln}" />
-                                <Input id="inpVbeln" value="{view>/params/vbeln}" placeholder="Nº OV (CSV)" width="100%" />
+                                <Input id="inpVbeln" value="{view>/params/vbeln}" placeholder="Nº OV (CSV)" width="50%" />
                             </VBox>
                         </Panel>
 
@@ -182,7 +182,7 @@
                         <Panel visible="{view>/processadores/SEGMENTO}" headerText="{i18n>lblSegmento}" class="sapUiTinyMargin paramCard">
                             <VBox class="sapUiSmallMargin">
                                 <Label text="{i18n>lblDatbi}" />
-                                <DateRangePicker id="idDatbiRangeDateRangePicker" value="{view>/params/datbiRange}" displayFormat="dd/MM/yyyy" valueFormat="yyyyMMdd" width="100%" class="sapUiTinyMarginBottom" />
+                                <DateRangeSelection id="idDatbiRangeDateRangePicker" value="{view>/params/datbiRange}" displayFormat="dd/MM/yyyy" valueFormat="yyyyMMdd" width="50%" class="sapUiTinyMarginBottom" />
                                 <Label text="{i18n>lblZtag1}" />
                                 <Input id="inpZtag1" value="{view>/params/ztag1}" placeholder="Ex: X" width="6rem" />
                             </VBox>

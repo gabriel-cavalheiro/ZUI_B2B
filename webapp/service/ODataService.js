@@ -18,11 +18,12 @@ sap.ui.define([], function () {
          * Carrega lista de Org. de Vendas para o campo Vkorg
          */
         loadOrgVendas: function (oModel) {
+            var that = this;
             return new Promise(function (resolve, reject) {
                 oModel.read("/ZshOrgVendasSet", {
                     success: function (oData) {
                         var aItems = (oData.results || []).map(function (o) {
-                            return { vkorg: o.Vkorg, vtext: o.Vtext };
+                            return Object.assign(that._toLowerCaseObject(o), { vkorg: o.Vkorg, vtext: o.Vtext });
                         });
                         resolve(aItems);
                     },
@@ -37,11 +38,12 @@ sap.ui.define([], function () {
          * Carrega lista de Branches (para NF)
          */
         loadBranches: function (oModel) {
+            var that = this;
             return new Promise(function (resolve, reject) {
                 oModel.read("/YpmtlBranchSet", {
                     success: function (oData) {
                         var aItems = (oData.results || []).map(function (o) {
-                            return { branch: o.Branch, name: o.Name, bukrs: o.Bukrs };
+                            return Object.assign(that._toLowerCaseObject(o), { branch: o.Branch, name: o.Name, bukrs: o.Bukrs });
                         });
                         resolve(aItems);
                     },
@@ -56,11 +58,16 @@ sap.ui.define([], function () {
          * Carrega lista de Clientes
          */
         loadClientes: function (oModel) {
+            var that = this;
             return new Promise(function (resolve, reject) {
                 oModel.read("/ZshClientesSet", {
                     success: function (oData) {
                         var aItems = (oData.results || []).map(function (o) {
-                            return { customer: o.Customer, customername: o.Customername, cityname: o.Cityname };
+                            return Object.assign(that._toLowerCaseObject(o), {
+                                customer: o.Customer,
+                                customername: o.Customername,
+                                cityname: o.Cityname
+                            });
                         });
                         resolve(aItems);
                     },
@@ -75,11 +82,15 @@ sap.ui.define([], function () {
          * Carrega lista de Produtos/Materiais
          */
         loadProdutos: function (oModel) {
+            var that = this;
             return new Promise(function (resolve, reject) {
                 oModel.read("/ZshProdutosSet", {
                     success: function (oData) {
                         var aItems = (oData.results || []).map(function (o) {
-                            return { product: o.Product, productname: o.Productname };
+                            return Object.assign(that._toLowerCaseObject(o), {
+                                product: o.Product,
+                                productname: o.Productname
+                            });
                         });
                         resolve(aItems);
                     },
@@ -88,6 +99,15 @@ sap.ui.define([], function () {
                     }
                 });
             });
+        },
+
+        _toLowerCaseObject: function (oData) {
+            var oResult = {};
+            Object.keys(oData || {}).forEach(function (sKey) {
+                var sLower = sKey.charAt(0).toLowerCase() + sKey.slice(1);
+                oResult[sLower] = oData[sKey];
+            });
+            return oResult;
         },
 
         _callFunction: function (oModel, sFunctionName, oParams) {

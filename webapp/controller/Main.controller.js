@@ -20,6 +20,32 @@ sap.ui.define([
             this._oVHProdutosDialog = null;
             this._oVHBranchDialog = null;
             this._sProdutoTargetField = null;
+            this._mVHFilterConfig = {
+                clientes: {
+                    collectionPath: "/clientes",
+                    searchFields: ["customer", "customername", "cityname"],
+                    additionalBindings: [
+                        { sourcePath: "/vkorg", targetCandidates: ["vkorg", "salesorg"] }
+                    ]
+                },
+                produtos: {
+                    collectionPath: "/produtos",
+                    searchFields: ["product", "productname"],
+                    additionalBindings: [
+                        { sourcePath: "/vkorg", targetCandidates: ["vkorg", "salesorg"] },
+                        { sourcePath: "/params/vtweg", targetCandidates: ["vtweg"] },
+                        { sourcePath: "/params/werks", targetCandidates: ["werks"] },
+                        { sourcePath: "/params/mtart", targetCandidates: ["mtart"] }
+                    ]
+                },
+                branch: {
+                    collectionPath: "/branches",
+                    searchFields: ["branch", "name"],
+                    additionalBindings: [
+                        { sourcePath: "/vkorg", targetCandidates: ["vkorg", "bukrs"] }
+                    ]
+                }
+            };
             this._initViewModel();
             this._loadOrgVendas();
         },
@@ -104,6 +130,99 @@ sap.ui.define([
             });
         },
 
+        _applyValueHelpFilters: function (oDialog, sConfigKey, sSearchValue) {
+            var mCfg = this._mVHFilterConfig[sConfigKey];
+            if (!mCfg) {
+                return;
+            }
+
+            var oBinding = oDialog.getBinding("items");
+            if (!oBinding) {
+                return;
+            }
+
+            var aFilters = [];
+            var oSearchFilter = this._buildSearchFilter(mCfg.searchFields, sSearchValue);
+            var oAdditionalFilter = this._buildAdditionalBindingFilter(
+                mCfg.collectionPath,
+                mCfg.additionalBindings
+            );
+
+            if (oAdditionalFilter) {
+                aFilters.push(oAdditionalFilter);
+            }
+            if (oSearchFilter) {
+                aFilters.push(oSearchFilter);
+            }
+
+            if (!aFilters.length) {
+                oBinding.filter([]);
+                return;
+            }
+
+            oBinding.filter(aFilters.length === 1 ? aFilters[0] : new Filter({
+                filters: aFilters,
+                and: true
+            }));
+        },
+
+        _buildSearchFilter: function (aFields, sSearchValue) {
+            if (!sSearchValue) {
+                return null;
+            }
+            return new Filter({
+                filters: aFields.map(function (sField) {
+                    return new Filter(sField, FilterOperator.Contains, sSearchValue);
+                }),
+                and: false
+            });
+        },
+
+        _buildAdditionalBindingFilter: function (sCollectionPath, aBindings) {
+            var oViewModel = this.getView().getModel("view");
+            var aItems = oViewModel.getProperty(sCollectionPath) || [];
+            var aFilters = [];
+
+            (aBindings || []).forEach(function (oBinding) {
+                var sSource = oViewModel.getProperty(oBinding.sourcePath);
+                var sValue = (sSource || "").toString().split(",")[0].trim();
+                if (!sValue) {
+                    return;
+                }
+
+                var sTarget = this._resolveTargetProperty(aItems, oBinding.targetCandidates);
+                if (!sTarget) {
+                    return;
+                }
+
+                aFilters.push(new Filter(sTarget, FilterOperator.EQ, sValue));
+            }.bind(this));
+
+            if (!aFilters.length) {
+                return null;
+            }
+
+            return new Filter({
+                filters: aFilters,
+                and: true
+            });
+        },
+
+        _resolveTargetProperty: function (aItems, aCandidates) {
+            var oFirst = aItems[0];
+            if (!oFirst) {
+                return null;
+            }
+
+            for (var i = 0; i < aCandidates.length; i++) {
+                if (Object.prototype.hasOwnProperty.call(oFirst, aCandidates[i])) {
+                    return aCandidates[i];
+                }
+            }
+
+            return null;
+        },
+
         // ========== VALUE HELP VKORG ==========
 
         onValueHelpVkorg: function () {
@@ -176,28 +295,18 @@ sap.ui.define([
                     }).then(function (oDialog) {
                         that._oVHClientesDialog = oDialog;
                         oView.addDependent(oDialog);
+                        that._applyValueHelpFilters(oDialog, "clientes", "");
                         oDialog.open();
                     });
                 } else {
+                    that._applyValueHelpFilters(that._oVHClientesDialog, "clientes", "");
                     that._oVHClientesDialog.open();
                 }
             });
         },
 
         onVHClientesSearch: function (oEvent) {
-            var sValue = oEvent.getParameter("value");
-            var aFilters = [];
-            if (sValue) {
-                aFilters.push(new Filter({
-                    filters: [
-                        new Filter("customer", FilterOperator.Contains, sValue),
-                        new Filter("customername", FilterOperator.Contains, sValue),
-                        new Filter("cityname", FilterOperator.Contains, sValue)
-                    ],
-                    and: false
-                }));
-            }
-            oEvent.getSource().getBinding("items").filter(aFilters);
+            this._applyValueHelpFilters(oEvent.getSource(), "clientes", oEvent.getParameter("value"));
         },
 
         onVHClientesConfirm: function (oEvent) {
@@ -241,27 +350,18 @@ sap.ui.define([
                     }).then(function (oDialog) {
                         that._oVHProdutosDialog = oDialog;
                         oView.addDependent(oDialog);
+                        that._applyValueHelpFilters(oDialog, "produtos", "");
                         oDialog.open();
                     });
                 } else {
+                    that._applyValueHelpFilters(that._oVHProdutosDialog, "produtos", "");
                     that._oVHProdutosDialog.open();
                 }
             });
         },
 
         onVHProdutosSearch: function (oEvent) {
-            var sValue = oEvent.getParameter("value");
-            var aFilters = [];
-            if (sValue) {
-                aFilters.push(new Filter({
-                    filters: [
-                        new Filter("product", FilterOperator.Contains, sValue),
-                        new Filter("productname", FilterOperator.Contains, sValue)
-                    ],
-                    and: false
-                }));
-            }
-            oEvent.getSource().getBinding("items").filter(aFilters);
+            this._applyValueHelpFilters(oEvent.getSource(), "produtos", oEvent.getParameter("value"));
         },
 
         onVHProdutosConfirm: function (oEvent) {
@@ -290,27 +390,18 @@ sap.ui.define([
                     }).then(function (oDialog) {
                         that._oVHBranchDialog = oDialog;
                         oView.addDependent(oDialog);
+                        that._applyValueHelpFilters(oDialog, "branch", "");
                         oDialog.open();
                     });
                 } else {
+                    that._applyValueHelpFilters(that._oVHBranchDialog, "branch", "");
                     that._oVHBranchDialog.open();
                 }
             });
         },
 
         onVHBranchSearch: function (oEvent) {
-            var sValue = oEvent.getParameter("value");
-            var aFilters = [];
-            if (sValue) {
-                aFilters.push(new Filter({
-                    filters: [
-                        new Filter("branch", FilterOperator.Contains, sValue),
-                        new Filter("name", FilterOperator.Contains, sValue)
-                    ],
-                    and: false
-                }));
-            }
-            oEvent.getSource().getBinding("items").filter(aFilters);
+            this._applyValueHelpFilters(oEvent.getSource(), "branch", oEvent.getParameter("value"));
         },
 
         onVHBranchConfirm: function (oEvent) {
