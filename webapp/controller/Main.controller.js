@@ -20,6 +20,8 @@ sap.ui.define([
             this._oVHProdutosDialog = null;
             this._oVHBranchDialog = null;
             this._sProdutoTargetField = null;
+            this._iMinProdutoSearchChars = 3;
+            this._iMaxProdutosVH = 200;
             this._mVHFilterConfig = {
                 clientes: {
                     collectionPath: "/clientes",
@@ -339,29 +341,71 @@ sap.ui.define([
         _openProdutosDialog: function () {
             var oView = this.getView();
             var that = this;
-            var aProdutos = oView.getModel("view").getProperty("/produtos") || [];
+            oView.getModel("view").setProperty("/produtos", []);
 
-            Promise.resolve(aProdutos.length ? aProdutos : this._loadProdutos()).then(function () {
-                if (!that._oVHProdutosDialog) {
-                    Fragment.load({
-                        id: oView.getId() + "-produtos",
-                        name: "br.com.inbetta.zsdb2b.view.ValueHelpProdutos",
-                        controller: that
-                    }).then(function (oDialog) {
-                        that._oVHProdutosDialog = oDialog;
-                        oView.addDependent(oDialog);
-                        that._applyValueHelpFilters(oDialog, "produtos", "");
-                        oDialog.open();
-                    });
-                } else {
-                    that._applyValueHelpFilters(that._oVHProdutosDialog, "produtos", "");
-                    that._oVHProdutosDialog.open();
-                }
-            });
+            if (!this._oVHProdutosDialog) {
+                Fragment.load({
+                    id: oView.getId() + "-produtos",
+                    name: "br.com.inbetta.zsdb2b.view.ValueHelpProdutos",
+                    controller: this
+                }).then(function (oDialog) {
+                    that._oVHProdutosDialog = oDialog;
+                    oView.addDependent(oDialog);
+                    oDialog.setNoDataText("Digite ao menos " + that._iMinProdutoSearchChars + " caracteres e pesquise.");
+                    oDialog.open();
+                });
+            } else {
+                this._oVHProdutosDialog.setNoDataText("Digite ao menos " + this._iMinProdutoSearchChars + " caracteres e pesquise.");
+                this._oVHProdutosDialog.open();
+            }
         },
 
         onVHProdutosSearch: function (oEvent) {
-            this._applyValueHelpFilters(oEvent.getSource(), "produtos", oEvent.getParameter("value"));
+            this._searchProdutosValueHelp(oEvent.getParameter("value"));
+        },
+
+        _searchProdutosValueHelp: function (sSearchValue) {
+            var sTerm = (sSearchValue || "").trim();
+            var oViewModel = this.getView().getModel("view");
+            var oDialog = this._oVHProdutosDialog;
+
+            if (sTerm.length < this._iMinProdutoSearchChars) {
+                oViewModel.setProperty("/produtos", []);
+                if (oDialog) {
+                    oDialog.setNoDataText("Digite ao menos " + this._iMinProdutoSearchChars + " caracteres e pesquise.");
+                }
+                return;
+            }
+
+            var oCriteria = {
+                search: sTerm,
+                top: this._iMaxProdutosVH,
+                vkorg: oViewModel.getProperty("/vkorg"),
+                vtweg: oViewModel.getProperty("/params/vtweg"),
+                werks: oViewModel.getProperty("/params/werks"),
+                mtart: oViewModel.getProperty("/params/mtart")
+            };
+
+            if (oDialog) {
+                oDialog.setBusy(true);
+            }
+
+            ODataService.searchProdutos(this.getOwnerComponent().getModel(), oCriteria)
+                .then(function (aItems) {
+                    oViewModel.setProperty("/produtos", aItems);
+                    if (oDialog && aItems.length >= this._iMaxProdutosVH) {
+                        oDialog.setNoDataText("Refine a busca para reduzir resultados.");
+                    }
+                }.bind(this))
+                .catch(function (oError) {
+                    oViewModel.setProperty("/produtos", []);
+                    MessageBox.error(ODataService.extractErrorMessage(oError));
+                })
+                .then(function () {
+                    if (oDialog) {
+                        oDialog.setBusy(false);
+                    }
+                });
         },
 
         onVHProdutosConfirm: function (oEvent) {

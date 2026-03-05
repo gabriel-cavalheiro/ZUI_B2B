@@ -1,4 +1,7 @@
-sap.ui.define([], function () {
+sap.ui.define([
+    "sap/ui/model/Filter",
+    "sap/ui/model/FilterOperator"
+], function (Filter, FilterOperator) {
     "use strict";
 
     return {
@@ -85,6 +88,48 @@ sap.ui.define([], function () {
             var that = this;
             return new Promise(function (resolve, reject) {
                 oModel.read("/ZshProdutosSet", {
+                    success: function (oData) {
+                        var aItems = (oData.results || []).map(function (o) {
+                            return Object.assign(that._toLowerCaseObject(o), {
+                                product: o.Product,
+                                productname: o.Productname
+                            });
+                        });
+                        resolve(aItems);
+                    },
+                    error: function (oError) {
+                        reject(oError);
+                    }
+                });
+            });
+        },
+
+        /**
+         * Busca produtos no backend (server-side) para evitar carregar todo o dataset no VH
+         */
+        searchProdutos: function (oModel, oCriteria) {
+            var that = this;
+            var sSearch = ((oCriteria && oCriteria.search) || "").trim();
+            var iTop = (oCriteria && oCriteria.top) || 200;
+
+            if (!sSearch) {
+                return Promise.resolve([]);
+            }
+
+            return new Promise(function (resolve, reject) {
+                var aFilters = [new Filter({
+                    filters: [
+                        new Filter("Product", FilterOperator.Contains, sSearch),
+                        new Filter("Productname", FilterOperator.Contains, sSearch)
+                    ],
+                    and: false
+                })];
+
+                oModel.read("/ZshProdutosSet", {
+                    filters: aFilters,
+                    urlParameters: {
+                        "$top": String(iTop)
+                    },
                     success: function (oData) {
                         var aItems = (oData.results || []).map(function (o) {
                             return Object.assign(that._toLowerCaseObject(o), {
