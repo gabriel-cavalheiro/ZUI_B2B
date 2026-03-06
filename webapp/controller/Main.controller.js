@@ -948,9 +948,11 @@ sap.ui.define([
                 aMessages = [aMessages];
             }
 
-            var bTemErro = aMessages.some(function (m) {
-                return m.Type === "E";
-            });
+            var bTemErro = aMessages.some(function (m) { return m.Type === "E"; });
+            var bTemAviso = !bTemErro && aMessages.some(function (m) { return m.Type === "W" || m.Type === "I"; });
+
+            var sStatus = bTemErro ? "E" : (bTemAviso ? "W" : "S");
+            var sStatusText = bTemErro ? "Erro" : (bTemAviso ? "Aviso" : "Sucesso");
 
             var sMensagens = aMessages.map(function (m) {
                 return m.Message || "";
@@ -958,14 +960,16 @@ sap.ui.define([
 
             oModel.setProperty("/resultados", [{
                 processor: sTipo,
-                status: bTemErro ? "E" : "S",
-                statusText: bTemErro ? "Erro" : "Sucesso",
+                status: sStatus,
+                statusText: sStatusText,
                 mensagem: sMensagens
             }]);
             oModel.setProperty("/resultadoVisivel", true);
 
             if (bTemErro) {
                 MessageBox.error("Processamento concluido com erros.\n\n" + sMensagens);
+            } else if (bTemAviso) {
+                MessageBox.warning(sMensagens);
             } else {
                 MessageToast.show("Processamento concluido com sucesso!");
             }
