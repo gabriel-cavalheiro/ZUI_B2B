@@ -109,7 +109,8 @@ sap.ui.define([
                     matest: "",
                     branch: "", cRedatRange: "",
                     erdatRange: "", vbeln: "",
-                    datbiRange: "", ztag1: ""
+                    datbiRange: "", ztag1: "",
+                    dtincrRange: ""
                 },
                 temSelecionado: false,
                 resultadoVisivel: false,
@@ -420,7 +421,7 @@ sap.ui.define([
             }
         },
 
-        onOrgVendasSelectDialogCancel: function () {},
+        onOrgVendasSelectDialogCancel: function () { },
 
         onVkorgSuggestionSelected: function (oEvent) {
             var oItem = oEvent.getParameter("selectedItem");

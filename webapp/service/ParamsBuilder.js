@@ -64,6 +64,21 @@ sap.ui.define([], function () {
         },
 
         /**
+         * Converte um range "YYYYMMDD - YYYYMMDD" para o formato "YYYYMMDD:YYYYMMDD"
+         * aceito pelo handler ABAP como intervalo BT.
+         * Se apenas uma data, retorna "YYYYMMDD" (EQ).
+         * @private
+         */
+        _rangeToInterval: function (sRange) {
+            if (!sRange) { return ""; }
+            var aParts = sRange.split(" - ");
+            if (aParts.length === 2 && aParts[1]) {
+                return aParts[0] + ":" + aParts[1];
+            }
+            return aParts[0] || "";
+        },
+
+        /**
          * Adiciona parâmetros comuns de todos os processadores
          * @private
          */
@@ -107,6 +122,10 @@ sap.ui.define([], function () {
             // OV
             if (p.erdatRange) { oParams.Erdat = this._rangeToCsv(p.erdatRange); }
             if (p.vbeln) { oParams.Vbeln = p.vbeln; }
+
+            // Data Incremental (s_dtincr) — usada por NF, Lista de Preço, Estoque, Impostos
+            // Formato enviado: "YYYYMMDD:YYYYMMDD" (intervalo BT) ou "YYYYMMDD" (dia único)
+            if (p.dtincrRange) { oParams.Dtincr = this._rangeToInterval(p.dtincrRange); }
 
             // Segmento
             if (p.datbiRange) { oParams.Datbi = this._rangeFrom(p.datbiRange); }

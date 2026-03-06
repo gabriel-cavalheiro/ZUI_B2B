@@ -87,6 +87,10 @@
                                 <Label text="{i18n>lblMater}" />
                                 <Input id="inpMater" value="{view>/params/mater}" placeholder="Material" width="50%"
                                     showValueHelp="true" valueHelpRequest=".onMaterInputValueHelpRequest" />
+                                <VBox visible="{= ${view>/tipoCarga} === 'INCREMENTAL' }">
+                                    <Label text="{i18n>lblDtincr}" class="sapUiTinyMarginTop" />
+                                    <DateRangeSelection id="idDtincrListaRangeDateRangePicker" value="{view>/params/dtincrRange}" displayFormat="dd/MM/yyyy" valueFormat="yyyyMMdd" width="50%" />
+                                </VBox>
                             </VBox>
                         </Panel>
 
@@ -127,6 +131,10 @@
                                     width="50%"
                                     showValueHelp="true"
                                     valueHelpRequest=".onShiptInputValueHelpRequest" />
+                                <VBox visible="{= ${view>/tipoCarga} === 'INCREMENTAL' }">
+                                    <Label text="{i18n>lblDtincr}" class="sapUiTinyMarginTop" />
+                                    <DateRangeSelection id="idDtincrImpostosRangeDateRangePicker" value="{view>/params/dtincrRange}" displayFormat="dd/MM/yyyy" valueFormat="yyyyMMdd" width="50%" />
+                                </VBox>
                             </VBox>
                         </Panel>
 
@@ -181,6 +189,10 @@
                                 <Label text="{i18n>lblMatest}" />
                                 <Input id="inpMatest" value="{view>/params/matest}" placeholder="Material Estoque" width="50%"
                                     showValueHelp="true" valueHelpRequest=".onMatestInputValueHelpRequest" />
+                                <VBox visible="{= ${view>/tipoCarga} === 'INCREMENTAL' }">
+                                    <Label text="{i18n>lblDtincr}" class="sapUiTinyMarginTop" />
+                                    <DateRangeSelection id="idDtincrEstoqueRangeDateRangePicker" value="{view>/params/dtincrRange}" displayFormat="dd/MM/yyyy" valueFormat="yyyyMMdd" width="50%" />
+                                </VBox>
                             </VBox>
                         </Panel>
 
@@ -191,7 +203,11 @@
                                 <Input id="inpBranch" value="{view>/params/branch}" placeholder="Filial" width="50%"
                                     showValueHelp="true" valueHelpRequest=".onBranchInputValueHelpRequest" class="sapUiTinyMarginBottom" />
                                 <Label text="{i18n>lblCredat}" />
-                                <DateRangeSelection id="idCRedatRangeDateRangePicker" value="{view>/params/cRedatRange}" displayFormat="dd/MM/yyyy" valueFormat="yyyyMMdd" width="50%" />
+                                <DateRangeSelection id="idCRedatRangeDateRangePicker" value="{view>/params/cRedatRange}" displayFormat="dd/MM/yyyy" valueFormat="yyyyMMdd" width="50%" class="sapUiTinyMarginBottom" />
+                                <VBox visible="{= ${view>/tipoCarga} === 'INCREMENTAL' }">
+                                    <Label text="{i18n>lblDtincr}" />
+                                    <DateRangeSelection id="idDtincrNFRangeDateRangePicker" value="{view>/params/dtincrRange}" displayFormat="dd/MM/yyyy" valueFormat="yyyyMMdd" width="50%" />
+                                </VBox>
                             </VBox>
                         </Panel>
 
