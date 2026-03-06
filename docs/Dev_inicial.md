@@ -94,6 +94,9 @@ A aplicação segue o padrão **MVC** do SAP UI5:
 **Camada de Serviço:**
 - `ODataService.js` — encapsula todas as chamadas OData (leitura de entidades e chamadas de função)
 - `ParamsBuilder.js` — constrói objetos de parâmetros limpos para os function imports do backend
+  - `_rangeToCsv(sRange)` — converte "A,B,C" para CSV
+  - `_rangeFrom(sRange)` — extrai a primeira data de um range
+  - `_rangeToInterval(sRange)` — converte "YYYYMMDD - YYYYMMDD" para "YYYYMMDD:YYYYMMDD" (formato BT do ABAP) ou "YYYYMMDD" (EQ)
 
 ---
 
@@ -129,6 +132,7 @@ Cada processador tem seu próprio conjunto de parâmetros exibidos condicionalme
 | `Datum` | Período Referência | `Edm.String` | Intervalo de datas (YYYYMMDD,YYYYMMDD) |
 | `Pltyp` | Tipo Lista Preço | `Edm.String` | Tipo de lista de preço (value help) |
 | `Mater` | Material | `Edm.String` | Código do material (value help) |
+| `Dtincr` | Período Incremental | `Edm.String` | Intervalo incremental (YYYYMMDD:YYYYMMDD) — visível somente no modo INCREMENTAL |
 
 ### Impostos
 
@@ -141,6 +145,7 @@ Cada processador tem seu próprio conjunto de parâmetros exibidos condicionalme
 | `Gruop` | Grupo | `Edm.String` | Grupo de imposto (value help) |
 | `Shipf` | Emissor | `Edm.String` | Ship From — ICMS (value help) |
 | `Shipt` | Receptor | `Edm.String` | Ship To — ICMS (value help, dependente de Shipf) |
+| `Dtincr` | Período Incremental | `Edm.String` | Intervalo incremental (YYYYMMDD:YYYYMMDD) — visível somente no modo INCREMENTAL |
 
 ### Clientes
 
@@ -166,6 +171,7 @@ Cada processador tem seu próprio conjunto de parâmetros exibidos condicionalme
 | Parâmetro OData | Campo UI | Tipo | Descrição |
 |---|---|---|---|
 | `Matest` | Material Estoque | `Edm.String` | Código do material (value help) |
+| `Dtincr` | Período Incremental | `Edm.String` | Intervalo incremental (YYYYMMDD:YYYYMMDD) — visível somente no modo INCREMENTAL |
 
 ### Nota Fiscal
 
@@ -173,6 +179,7 @@ Cada processador tem seu próprio conjunto de parâmetros exibidos condicionalme
 |---|---|---|---|
 | `Branch` | Filial | `Edm.String` | Filial (value help) |
 | `Credat` | Período Criação NF | `Edm.String` | Intervalo de datas |
+| `Dtincr` | Período Incremental | `Edm.String` | Intervalo incremental (YYYYMMDD:YYYYMMDD) — visível somente no modo INCREMENTAL |
 
 ### Ordem de Venda
 
@@ -297,6 +304,8 @@ View principal com 3 seções e uma toolbar de rodapé:
 #### Seção 2 — Parâmetros (visibilidade dinâmica)
 Cada processador expõe seus parâmetros em cards flexíveis responsivos, visíveis somente quando o processador está selecionado.
 
+- **Período Incremental (`DateRangeSelection`):** presente nos panels de Lista de Preço, Impostos, Estoque e Nota Fiscal. O campo é encapsulado em um `VBox` com visibilidade ligada a `{= ${view>/tipoCarga} === 'INCREMENTAL' }`, portanto só aparece quando o tipo de carga for **INCREMENTAL**. Todos os quatro campos compartilham o mesmo binding `{view>/params/dtincrRange}` e são formatados como `dd/MM/yyyy` (valueFormat `yyyyMMdd`).
+
 #### Seção 3 — Resultado da Execução (pós-execução)
 Tabela com colunas: **Processador**, **Status** (ícone colorido), **Mensagens**.
 
@@ -387,6 +396,7 @@ Todos os fragments usam `sap.m.SelectDialog` com suporte a busca.
 | `Gruop` | `Edm.String` | Sim | Grupo de imposto |
 | `Shipf` | `Edm.String` | Sim | Ship From (ICMS) |
 | `Shipt` | `Edm.String` | Sim | Ship To (ICMS) |
+| `Dtincr` | `Edm.String` | Sim | Período incremental — NF, Lista de Preço, Estoque, Impostos (formato: "YYYYMMDD:YYYYMMDD" BT ou "YYYYMMDD" EQ) |
 
 ---
 
@@ -417,7 +427,8 @@ Todos os fragments usam `sap.m.SelectDialog` com suporte a busca.
     "matest": "",
     "branch": "",       "cRedatRange": "",
     "erdatRange": "",   "vbeln": "",
-    "datbiRange": "",   "ztag1": ""
+    "datbiRange": "",   "ztag1": "",
+    "dtincrRange": ""
   },
   "temSelecionado": false,
   "resultadoVisivel": false,
@@ -452,13 +463,13 @@ Todos os fragments usam `sap.m.SelectDialog` com suporte a busca.
 
 ## Internacionalização (i18n)
 
-**Arquivo:** `webapp/i18n/i18n.properties` — Português (Brasil) — ~104 chaves
+**Arquivo:** `webapp/i18n/i18n.properties` — Português (Brasil) — ~105 chaves
 
 | Grupo | Prefixo | Exemplos |
 |---|---|---|
 | Aplicação | `appTitle`, `title` | Nome e descrição do app |
 | Seções | `sec*` | `secProcessadores`, `secParametros`, `secResultado` |
-| Labels | `lbl*` | `lblVkorg`, `lblDatum`, `lblKunnr` |
+| Labels | `lbl*` | `lblVkorg`, `lblDatum`, `lblKunnr`, `lblDtincr` |
 | Botões | `btn*` | `btnExecutar`, `btnLimpar`, `btnSelecionarTodos` |
 | Colunas | `col*` | `colProcessador`, `colStatus`, `colMensagens` |
 

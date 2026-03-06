@@ -9,10 +9,7 @@
 
         <content>
             <VBox class="sapUiSmallMargin">
-
-                <!-- ========================== -->
                 <!-- Seleção de Processadores   -->
-                <!-- ========================== -->
                 <Panel expandable="true" expanded="true" headerText="{i18n>secProcessadores}">
                     <VBox class="sapUiSmallMargin">
 
@@ -62,10 +59,7 @@
                         </HBox>
                     </VBox>
                 </Panel>
-
-                <!-- ========================= -->
                 <!-- Parâmetros Condicionais   -->
-                <!-- ========================= -->
                 <Panel expandable="true" expanded="true" headerText="{i18n>secParametros}" visible="{view>/temSelecionado}">
 
                     <VBox class="sapUiSmallMargin">
@@ -233,10 +227,8 @@
 
                     </VBox>
                 </Panel>
-
-                <!-- ==================== -->
+                
                 <!-- Resultados           -->
-                <!-- ==================== -->
                 <Panel id="panelResultado" expandable="true" expanded="true" headerText="{i18n>secResultado}" visible="{view>/resultadoVisivel}">
 
                     <Table id="tblResultados" items="{view>/resultados}" sticky="ColumnHeaders">
